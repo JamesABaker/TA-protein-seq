@@ -12,6 +12,9 @@
 # -- the commands to be executed (programs to be run) :
 #
 # remember to run `qrsh -l inter -l short` before running on the cluster!!!!
+
+DATE=$(date +"date:%Y.%m.%d_time:%H:%M:%S")
+
 echo
 echo "This script was developed by James A Baker under the supervision of Dr Jim Warwicker."
 echo
@@ -46,10 +49,10 @@ echo
 read RESULT
 echo
 
-mkdir ./$RESULT
-mv TMD.fasta ./$RESULT/TRANSMEM.fasta
-mv single_pass_list.txt ./$RESULT/single_TRANSMEM.txt
-mv near_c_terminal_single_pass_list.txt ./$RESULT/C_terminal_single_TRANSMEM.txt
+mkdir ./date_$DATE
+mv TMD.fasta ./date_$DATE/TRANSMEM.fasta
+mv single_pass_list.txt ./date_$DATE/single_TRANSMEM.txt
+mv near_c_terminal_single_pass_list.txt ./date_$DATE/C_terminal_single_TRANSMEM.txt
 
 
 echo

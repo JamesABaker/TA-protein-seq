@@ -1,0 +1,17 @@
+# https://git-scm.com/docs/gitignore
+# https://help.github.com/articles/ignoring-files
+# Example .gitignore files: https://github.com/github/gitignore
+/bower_components/
+/node_modules/
+/TMD.fasta
+/single_pass_list.txt
+/input.dat
+/predicted_TA.fasta
+/uniget.dat
+/transmembranes.fasta
+/sprot_global_predicted TAS.txt
+/near_c_terminal_single_pass_list.txt
+/sprot_transmem.dat
+/date*/
+/archive/
+/todo.md

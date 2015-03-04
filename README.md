@@ -1,10 +1,3 @@
-####Current Issues
-These are issues that have not yet been logged on github, but need addressing.
- 1. Paralogues are included and this skews the count. These should be removed at every stage.
- 2. It is unclear if we have signal splice isoforms in our results.
- 3. The results are comprehensive and irrespective of target membrane.
- 4. Are *only* swissprot entries held at the end?
-
 #Tail Anchor Prediction
 
 ##Introduction
@@ -25,7 +18,7 @@ This list can be directly uploaded for batch retrieval from [***uniprot***](http
 
 This script reguires python 2.7, biopython, and an active internet connection.
 
-###Installing Biopython:
+####Installing Biopython:
  
  In **OSX** or **Linux**:
  
@@ -47,8 +40,9 @@ Save your uniprot text downloaded dataset as `input.dat` in the folder containin
 Then:
 
  - Open a terminal
- - Navigate to the folder. *`cd Downloads/Tail_Anchor_Prediction` for example*.
- - From within the directory containing the scripts run `bash runme.sh`.
- - The script will ask you for a folder name where your results will be saved.
+ - Navigate to the folder containing the scripts. (*`cd Downloads/TAPredict` for example*.)
+ - Run `bash runme.sh`.
+ - The results will be saved in a folder with the current time and date.
  
-*Please contact baker.james.jb@gmail.com if you run into any problems. If you need your issue addressing **quickly** and thoroughly, log an issue on GitHub.*
+*If you run into any problems or have any suggestions and corrections, please*, [log an issue on 
+GitHub](https://github.com/jbkr/TApredict/issues/new).
