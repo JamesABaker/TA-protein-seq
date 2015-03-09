@@ -57,6 +57,9 @@ for i in seqs:
             single_fasta_file.write("\n")
 
     elif i[2] == 2:
+        ID_for_writing = i[0][:10]
+        ID_for_writing = ID_for_writing.replace(">", "")
+        ID_for_writing = ID_for_writing.replace("'", "")
         print ID_for_writing, " looks like a multi pass protein.\nNot adding to list.\n"
     else:
         print "Something went wrong, no IDs could be counted."

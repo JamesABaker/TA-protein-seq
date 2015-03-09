@@ -44,10 +44,6 @@ echo
 echo "Analysis complete. A text file containing all the single pass transmembrane proteins with their TMD near the C terminal are contained in a text file."
 echo
 
-echo "What folder should the output files should be named in."
-echo
-read RESULT
-echo
 
 mkdir ./date_$DATE
 mv TMD.fasta ./date_$DATE/TRANSMEM.fasta

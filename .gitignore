@@ -15,3 +15,10 @@
 /date*/
 /archive/
 /todo.md
+*.ali
+
+human.dat
+
+*.fasta
+
+*.txt
