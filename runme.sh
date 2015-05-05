@@ -19,11 +19,12 @@ echo
 echo "This script was developed by James A Baker under the supervision of Dr Jim Warwicker."
 echo
 echo "It requires an active internet connection and an up to date version of biopython."
-echo "See readme.md for more information."
-sleep 1
+echo
+echo "See readme.md for more information on installation and visit www.github.com/jbkr/TA_predict to report any errors."
+sleep 2
 
 echo
-echo "Extracting TMDs from .dat file marked by TRANSMEM (this includes confirmed TMDs and predicted TMDs according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers..."
+echo "Extracting TMDs from .dat file marked by TRANSMEM. This includes confirmed TMDs and predicted TMDs according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers."
 echo
 
 python get_TMD.py

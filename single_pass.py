@@ -32,7 +32,7 @@ for i, item in enumerate(seqs): #This is disgusting code.
 
     if length_of_list == 2:
         this_list.extend([1])
-        if this_header[:10] == last_header[:10]: #if the IDs match (the first 10 characters), then we presume a multipass protein.
+        if this_header[:11] == last_header[:11]: #if the IDs match (the first 10 characters), then we presume a multipass protein.
     #This isn't a great way of counting since it maxes out at 2. Perhaps looping the script 10 times.
             this_list[2] += 1
             TMDcount = this_list[2]
@@ -44,27 +44,32 @@ for i, item in enumerate(seqs): #This is disgusting code.
 #Now that each fasta entry is tagged with a TMD count we can sort them into different lists.
 
 
-for i in seqs:
+for x, i in enumerate(seqs):
     #This goes through the list and splits the items into different text files based on their TMD count.
+    list_length = len(seqs)
+    if x+1 < list_length:
+        if i[2] == 1:
+            n = 2
+            ID_for_writing = str(i)
+            ID_for_writing = str(ID_for_writing.replace("[", ""))
+            ID_for_writing = str(ID_for_writing.replace("]", ""))
+            ID_for_writing = ID_for_writing.split("'")
+            "'".join(ID_for_writing[:n]), "'".join(ID_for_writing[n:])
+            ID_for_writing = ID_for_writing[1]
+            ID_for_writing = str(ID_for_writing)
+            ID_for_writing = ID_for_writing.replace(">", "")
+            ID_for_writing = ID_for_writing.replace("'", "")
+            with open ("single_pass_list.txt", "ab") as single_fasta_file:
+                single_fasta_file.write(ID_for_writing)
+                single_fasta_file.write("\n")
 
-    if i[2] == 1:
-        ID_for_writing = i[0][:10]
-        ID_for_writing = ID_for_writing.replace(">", "")
-        ID_for_writing = ID_for_writing.replace("'", "")
-        print ID_for_writing, " looks like a single pass protein.\nAdding to list.\n"
-        with open ("single_pass_list.txt", "ab") as single_fasta_file:
-            single_fasta_file.write(ID_for_writing)
-            single_fasta_file.write("\n")
+        elif i[2] == 2:
+            pass
 
-    elif i[2] == 2:
-        ID_for_writing = i[0][:10]
-        ID_for_writing = ID_for_writing.replace(">", "")
-        ID_for_writing = ID_for_writing.replace("'", "")
-        print ID_for_writing, " looks like a multi pass protein.\nNot adding to list.\n"
+        else:
+            print "Something went wrong, no IDs could be counted."
     else:
-        print "Something went wrong, no IDs could be counted."
+        pass
 
 
 ########################
-
-

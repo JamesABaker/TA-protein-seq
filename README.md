@@ -8,29 +8,30 @@ This bundle of scripts aims to filter TRANSMEM annotated sequences from a unipro
 
 There are a series of filters to deduce tail anchored proteins.
 
-- The script filters proteins by those with TRANSMEM regions. 
-- Then by those with only a single TRANSMEM region.
-- The script then gets an up to date copy of the file of the protein ID directly from uniprot and filters those by any that contain TRANSMEM regions within 25 residues of the C terminal residue.
+1. The script filters proteins by those with TRANSMEM regions. TRANSMEM annotation includes confirmed TMDs and predicted TMDs according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers.
+2. The TMDs of each protein are counted. If a protein has more than 1 TRANSMEM region, it is not added to the list. The list now contains those protein IDs with only a single TRANSMEM region.
+3. The script counts the distance between the TRANSMEM region and the C terminus. If the final residue of the TRANSMEM annotated region is within 25 residues of the C terminal residue, the ID is added to the list.
+4. Finally the script removes any proteins that contain NON_TER annotation. This removes signal anchor protein and multipass protein splice isoforms from the list.
 
-This list can be directly uploaded for batch retrieval from [***uniprot***](http://www.uniprot.org/uploadlists).
+This final list, and any intermediate list, can be directly uploaded for batch retrieval from [***uniprot***](http://www.uniprot.org/uploadlists) for more information.
 
 ##System Requirements
 
 This script reguires python 2.7, biopython, and an active internet connection.
 
 ####Installing Biopython:
- 
+
  In **OSX** or **Linux**:
- 
+
  - Open a terminal.
  - Run the following commands:
-  
+
  	`sudo easy_install pip`
- 	
+
  	`pip install numpy`
- 	
+
 	`pip install Biopython`
-	
+
 *If you come across any errors it is probably because python is not installed in the default locations, or a package has already been installed before you did these commands. Type in the above commands one after the other regardless and then try running the script.*
 
 ##Running the Prediction
@@ -43,6 +44,6 @@ Then:
  - Navigate to the folder containing the scripts. (*`cd Downloads/TAPredict` for example*.)
  - Run `bash runme.sh`.
  - The results will be saved in a folder with the current time and date.
- 
-*If you run into any problems or have any suggestions and corrections, please*, [log an issue on 
+
+*If you run into any problems or have any suggestions and corrections, please*, [log an issue on
 GitHub](https://github.com/jbkr/TApredict/issues/new).

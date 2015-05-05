@@ -17,6 +17,10 @@
 /todo.md
 *.ali
 
+
+#Specific to this project
+runme_backup.sh
+
 human.dat
 
 *.fasta

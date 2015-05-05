@@ -34,11 +34,15 @@ for filename in filenames:
 
                 #if there are any TRANSMEM entries, it prints them. Note that if there is no transmem domain then the ID is skipped, you won't get flanking regions without an identified TMD.
                 #Prints the output in the terminal
+                '''
                 print "ID: ", title_line
 
                 print "Trans Membrane Domain: ", f.extract(record.seq)
 
                 print "fasta output to file: \n>%s\n%s\n" % (title_line, TMD)
+                '''
+
+
+
 
 output.close()
-
