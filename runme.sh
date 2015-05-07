@@ -8,10 +8,16 @@
 #$ -cwd
 #$ -q
 
+
+################################################
+##########       Version 0.1       #############
+##########       James Baker       #############
+################################################
+
 #
 # -- the commands to be executed (programs to be run) :
 #
-# remember to run `qrsh -l inter -l short` before running on the cluster!!!!
+# remember to run `qrsh -l inter -l short` before running on the cluster!!!! Running on the cluster is not advised since this is a somewhat interactive sript and pulls information from different modules and applications.
 
 DATE=$(date +"date:%Y.%m.%d_time:%H:%M:%S")
 
