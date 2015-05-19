@@ -48,6 +48,12 @@ echo
 python check_C.py
 
 echo
+echo "Checking for any non terminal annotations to remove the possibility of splice varients of signal anchors or multipass proteins."
+echo
+
+python check_splice.py
+
+echo
 echo "Analysis complete. A text file containing all the single pass transmembrane proteins with their TMD near the C terminal are contained in a text file."
 echo
 
@@ -56,6 +62,9 @@ mkdir ./date_$DATE
 mv TMD.fasta ./date_$DATE/TRANSMEM.fasta
 mv single_pass_list.txt ./date_$DATE/single_TRANSMEM.txt
 mv near_c_terminal_single_pass_list.txt ./date_$DATE/C_terminal_single_TRANSMEM.txt
+mv splice_variant.txt ./date_$DATE/splice_variant.txt
+rm uniget.dat
+rm transmembranes.fasta
 
 
 echo
