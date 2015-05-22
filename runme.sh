@@ -30,6 +30,17 @@ echo "See readme.md for more information on installation and visit www.github.co
 sleep 2
 
 echo
+echo
+echo
+echo "What is the name of your input file? (include extension i.e file.dat or file.txt). Do not run this script using a file named 'input.dat'"
+echo
+echo
+
+read filename
+
+cp $filename input.dat
+echo
+
 echo "Extracting TMDs from .dat file marked by TRANSMEM. This includes confirmed TMDs and predicted TMDs according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers."
 echo
 
@@ -58,14 +69,15 @@ echo "Analysis complete. A text file containing all the single pass transmembran
 echo
 
 
-mkdir ./date_$DATE
-mv TMD.fasta ./date_$DATE/TRANSMEM.fasta
-mv single_pass_list.txt ./date_$DATE/single_TRANSMEM.txt
-mv near_c_terminal_single_pass_list.txt ./date_$DATE/C_terminal_single_TRANSMEM.txt
-mv splice_variant.txt ./date_$DATE/splice_variant.txt
+mkdir ./$filename_date_$DATE
+mv TMD.fasta ./$filename_date_$DATE/TRANSMEM.fasta
+mv single_pass_list.txt ./$filename_date_$DATE/single_TRANSMEM.txt
+mv near_c_terminal_single_pass_list.txt ./$filename_date_$DATE/C_terminal_single_TRANSMEM.txt
+mv splice_variant.txt ./$filename_date_$DATE/splice_variant.txt
+
 rm uniget.dat
 rm transmembranes.fasta
-
+rm input.dat
 
 echo
 echo "Finished moving files."

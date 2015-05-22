@@ -11,6 +11,8 @@ firstfile = gets.chomp
 
 #In the pipeline
 
+puts "Checking for IDs from this list that were not predicted by the Kalbfleisch 2007 experiment."
+
 firstfile = "C_terminal_single_TRANSMEM.txt"
 secondfile = "S1_kalbfleisch_list_uniprot_excluding_predicted_proteins.txt"
 

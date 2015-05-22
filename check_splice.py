@@ -18,7 +18,7 @@ for i in interaction: #Begins the iteration
     i = i.replace("\n", "")
     i = i.replace(" ", "") #Removes the spaces between lines. This was causing some really weird bugs and cutting the url below in half.
     urllib.urlretrieve("http://www.uniprot.org/uniprot/%s.txt" % i, filename='uniget.dat') #This uses the ID (saved as i) in a file called uniget.dat.
-    print "Getting %s data from the uniprot." % i
+    #print "Getting %s data from the uniprot." % i
 
     #The individual result held in uniget.dat is saved as lildat, and then added to bigdat.
     with open ("uniget.dat", "r") as lildatfile:
@@ -60,7 +60,11 @@ with open('C_terminal_single_TRANSMEM.txt') as file2list:
     C_terminal = file2list.readlines()
 
 #Compares the intersections of the lists i.e finds the matches
-output = set(C_terminal).remove(set(spliced))
+if len(spliced)>1:
+    output = set(C_terminal).remove(set(spliced))
+else:
+    pass
+
 output = str(output)
 for char in "'][,\)(nset":
     output = output.replace(char,'')
