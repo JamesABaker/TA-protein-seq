@@ -36,6 +36,7 @@ puts g_lines
 
 puts "Here is some sort of sorting..."
 
+#Removes the S1 list from your dataset.
 new_protein_list = a - b
 
 puts new_protein_list

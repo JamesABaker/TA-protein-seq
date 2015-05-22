@@ -26,3 +26,5 @@ human.dat
 *.fasta
 
 *.txt
+
+!/S1_kalbfleisch_list_uniprot_excluding_predicted_proteins.txt

@@ -2,17 +2,18 @@
 
 ##Introduction
 
-This bundle of scripts aims to filter a uniprot text file into a list of potential Tail Anchors.
+This bundle of scripts aims to filter a uniprot text file into a list of potential Tail Anchors. Basically the list filters a uniprot text file to a list of uniprot IDs that are likely tail anchors.
 
 ##Running the Prediction
 
-Save your uniprot text downloaded dataset as `input.dat` in the folder containing the scripts.
+Save your uniprot text downloaded dataset in the folder containing the scripts.
 
 Then:
 
  - Open a terminal
  - Navigate to the folder containing the scripts. (*`cd Downloads/TAPredict` for example*.)
  - Type `bash runme.sh` and hit enter.
+ - The script will prompt you to enter the name of your input file.
  - The results will be saved in a folder with the current time and date.
 
  It is important that you do not add files to the folder, or tamper with input files, or script files whilst the script is running as the script may not report an error and blunder on recklessly with erroneous I/O files.
