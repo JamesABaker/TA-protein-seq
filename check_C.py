@@ -37,15 +37,15 @@ for i in protein_list: #Begins the iteration
                 for f in record.features:
             #feature type refers to TRANSMEM
                     if f.type == feature_type:
-                        C_terminal_distance = len(record.seq) - f.location.end
-                        #print "The TMD of", record.id, " is ", C_terminal_distance, " residues from the C terminal."
-                        if C_terminal_distance < 26 :
+                        C_terminal_distance = len(record.seq) - f.location.end+1 #python counts from 0
+
+                        if C_terminal_distance < 15 :
                 #These are the flanking regions and the TMD using record.seq. They are identified by simply counting 5 spaces before and after the TMD is annotated as being.
                             #print("Since", record.id, "has a TRANSMEM of less than 25 residues, it will be taken to the next stage.")
                             TMD = f.extract(record.seq)
 
                 #Here we define the ID code and then the start and end positions.
-                            title_line = "'%s' | TMH: '%i-%i'" % (record.id, f.location.start+1, f.location.end)
+                            title_line = "'%s' | TMH: '%i-%i'" % (record.id, f.location.start+1, f.location.end+1)
 
                 #This prints the title and then any TRANSMEM regions associated with that entry along with flanking regions.
                             name = str(record.id)

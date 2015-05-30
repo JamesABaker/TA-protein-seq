@@ -53,7 +53,7 @@ echo
 python single_pass.py
 
 echo
-echo "Filtering each entry according to C terminal distance with a cutoff of the TRANSMEM annotated TMD being  less than 25 residues from the C-terminal."
+echo "Filtering each entry according to C terminal distance with a cutoff of the TRANSMEM annotated TMD being  less than 15 residues from the C-terminal."
 echo
 
 python check_C.py

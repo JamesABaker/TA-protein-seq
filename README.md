@@ -27,7 +27,7 @@ There are a series of filters to deduce tail anchored proteins.
 
 1. The script filters proteins by those with `TRANSMEM` regions. `TRANSMEM` annotation includes experimentally confirmed TMDs and predicted TMDs. Predictions of TMDs are according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers and is calculated by uniprot itself.
 2. The TMDs of each protein are counted. If a protein has more than 1 `TRANSMEM` region, it is not added to the list. The list now contains those protein IDs with only a single `TRANSMEM` region.
-3. The script counts the distance between the `TRANSMEM` region and the C terminus. If the final residue of the `TRANSMEM` annotated region is within 25 residues of the C terminal residue, the ID is added to the list.
+3. The script counts the distance between the `TRANSMEM` region and the C terminus. If the final residue of the `TRANSMEM` annotated region is within 15 residues of the C terminal residue, the ID is added to the list.
 4. Finally the script removes any proteins that contain `NON_TER` annotation. This removes potential signal anchor protein and multipass protein splice isoforms from the list.
 
 This final list, and any intermediate list, can be directly uploaded for batch retrieval from [***uniprot***](http://www.uniprot.org/uploadlists) for more information.
