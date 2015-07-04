@@ -21,6 +21,8 @@
 #Specific to this project
 runme_backup.sh
 
+academic_abstract.md
+
 human.dat
 
 *.fasta
