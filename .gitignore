@@ -25,6 +25,8 @@ academic_abstract.md
 
 human.dat
 
+.DS_Store
+
 *.fasta
 
 *.txt
