@@ -1,13 +1,8 @@
 
 #Generates overall TMH_and_flanking
 
-
 #This requires a working version of Biopython.
 from Bio import SeqIO
-
-
-
-
 
 #These are the variables that are repeatedly used throughout the script. The only one that changes is the output_filename that is changed as the separate fasta sequences are generated.
 filenames = ["input.dat"]
@@ -36,9 +31,8 @@ for filename in filenames:
                 #Prints the output in the terminal
                 '''
                 print "ID: ", title_line
-
-                print "Trans Membrane Domain: ", f.extract(record.seq)
-
+                print "Trans Membrane Domain: ",
+                f.extract(record.seq)
                 print "fasta output to file: \n>%s\n%s\n" % (title_line, TMD)
                 '''
 
