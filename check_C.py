@@ -13,7 +13,7 @@ with open('single_pass_list.txt') as custom_list:
     custom_list = custom_list.readlines()
     protein_list = list(custom_list)
 
-for i in protein_list: #Begins the iteration
+for i in protein_list: 
     i = i.replace(" \n", "")
     i = i.replace("\n", "")#Removes the spaces between lines. This was causing some really weird bugs and cutting the url below in half.
     urllib.urlretrieve("http://www.uniprot.org/uniprot/%s.txt" % i, filename='uniget.dat') #This uses the ID (saved as i) in a file called uniget.dat.
