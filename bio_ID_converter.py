@@ -1,6 +1,3 @@
-# This should be moved to its own project
-
-#These are what is needed to run the script. Default python should come with these modules.
 import urllib,urllib2
 import os
 import os.path

@@ -108,7 +108,7 @@ for filename in filenames:
                                 nosignal = nosignal + 1
 
                                 #checking for cytoplasmic facing regions
-                                if "Cyto" in
+                                if "Cyto" in str(f.location):
                                     #Printing fasta for hits
                                     print "Potential tail anchored protein:", record.id
                                     #Here we define the ID code and then the start and end positions.
@@ -119,7 +119,7 @@ for filename in filenames:
 
     print "Multipass records:", multipass_count
     print "Singlepass records:", singlepass_count
-    print "Singlepass within 15 of C terminal records:", within15
+    print "Singlepass within 25 of C terminal records:", within25
     print "Records that also didn't contain a signal peptide:", nosignal
 
 output.close()

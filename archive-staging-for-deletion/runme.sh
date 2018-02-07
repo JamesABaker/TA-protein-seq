@@ -48,7 +48,7 @@ python get_TMD.py
 echo
 echo "Getting a list of the single pass proteins by filtering out proteins with more than one TRANSMEM annotated TMD associated with their ID."
 echo
-
+touch single_pass_list.txt
 python single_pass.py
 
 echo
