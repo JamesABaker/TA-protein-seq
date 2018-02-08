@@ -17,12 +17,9 @@ Then:
 
  - Open a terminal
  - Navigate to the folder containing the scripts. (*`cd Downloads/TAPredict` for example*.)
- - Type `bash runme.sh` and hit enter.
- - The script will prompt you to enter the name of your input file.
- - The results will be saved in a folder with the current time and date.
+ - Run `python filters.py YOURFILE.txt`
 
- It is important that you do not add files to the folder, or tamper with input files, or script files whilst the script is running as the script may not report an error and blunder on recklessly with erroneous I/O files.
-
+ `YOURFILE` can be .txt or .dat downloaded from Uniprot as a text file.
 
 ## Filter Method
 
@@ -39,14 +36,14 @@ This final list, and any intermediate list, can be directly uploaded for batch r
 
 ## System Requirements
 
-This script requires python 2.7, biopython, and an active internet connection.
+This script requires python 2.7 and biopython.
 
 #### Installing Biopython:
 
  In **OSX** or **Linux**:
 
  - Open a terminal.
- - Run the following commands, entering your password where necessary:
+ - If you've not used pip before, run the following commands, entering your password where necessary:
 
  	`sudo easy_install pip; sudo pip install numpy; sudo pip install Biopython`
 
