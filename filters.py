@@ -302,20 +302,29 @@ for record in SeqIO.parse(input_file, input_format):
                         if len(tmh_sequence) <= maximum_tmd_length:
                             number_of_records_correct_length = number_of_records_correct_length + 1
 
+
+
                             # Is this a single-pass protein?
                             if total_tmd_count == 1:
                                 number_of_records_correct_length_single = number_of_records_correct_length_single + 1
 
-                                # Is the N-terminal cytoplasmic?
-                                if "Inside" in n_terminal_start:
-                                    print str(record.seq)
-                                    # Is the C-terminal within 25 residues of the final residue?
-                                    if abs(tmh_stop - len(str(record.seq))) < 26:
-                                        with open(output_filename, 'a') as my_file:
-                                            for i in tmh_record:
-                                                my_file.write(str(i))
-                                                my_file.write(",")
-                                            my_file.write("\n")
+                                # Is the protien a splice isoform? (checking for non-terminal residue annotation)
+                                splice_isoform = False
+                                for i, f in enumerate(record.features):
+                                    if f.type == other_feature_type:
+                                        splice_isoform=True
+                                if splice_isoform == False:
+
+                                    # Is the N-terminal cytoplasmic?
+                                    if "Inside" in n_terminal_start:
+                                        #print str(record.seq)
+                                        # Is the C-terminal within 25 residues of the final residue?
+                                        if abs(tmh_stop - len(str(record.seq))) < 26:
+                                            with open(output_filename, 'a') as my_file:
+                                                for i in tmh_record:
+                                                    my_file.write(str(i))
+                                                    my_file.write(",")
+                                                my_file.write("\n")
 
                     else:
                         length_exclusion_info = str(
@@ -331,11 +340,8 @@ for record in SeqIO.parse(input_file, input_format):
                     pass
 # General information regarding the output file useful as a log.
 print input_file, ", flank_clash_amendment_status:", flank_clash_amendment_status
-print "Number of TMHs in dataset:", number_of_records
-print "Number of TMHs after dumping incorrect lengths:", number_of_records_correct_length
-print "Records"
-print number_of_records
-print number_of_records_correct_length
+print "Number of TMHs in dataset (including multipass):", number_of_records
+print "Number of TMHs after dumping incorrect lengths (including multipass):", number_of_records_correct_length
 print "Single-pass"
 print "Total:", number_of_records_single
 print "After length exclusion:", number_of_records_correct_length_single
