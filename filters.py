@@ -1,17 +1,24 @@
+from __future__ import division
 import sys
 from Bio import SeqIO
 import numpy as np
+import subprocess
+import re
 
 
 print("This script was developed by James A Baker under the supervision of Dr Jim Warwicker.\nIt requires an active internet connection and an up to date version of biopython.\nSee readme.md for more information on installation and visit www.github.com/jbkr/TA_predict to report any errors.")
 
 input_file = str(sys.argv[1])
 flank_length = 5
-# This works with uniprot filetype. From the seqIO biopython wiki: Swiss-Prot aka UniProt format. Uses Bio.SwissProt internally. See also the UniProt XML format if something goes wrong.
+# This works with uniprot filetype. From the seqIO biopython wiki:
+# Swiss-Prot aka UniProt format. Uses Bio.SwissProt internally. See also
+# the UniProt XML format if something goes wrong.
 input_format = "swiss"
-# For future modification, this can be used to look for any annotation in the file.
+# For future modification, this can be used to look for any annotation in
+# the file.
 feature_type = "TRANSMEM"
-# Simply the output name, can be anything as it is written in binary (not file-type specific language).
+# Simply the output name, can be anything as it is written in binary (not
+# file-type specific language).
 output_filename_fasta = "TMD.fasta"
 other_feature_type = "NON-TER"
 signal_feature = "SIGNAL"
@@ -52,6 +59,15 @@ avoid_features = ["TRANSMEM", "INTRAMEM"]
 unknown = 0
 reliable_flank_length = flank_length
 
+record_count=0
+single_pass_count=0
+length_correct_count=0
+splice_isoform_count=0
+n_terminal_count=0
+c_terminal_near_end_count=0
+
+
+
 # We iterate through each record, parsed by biopython.
 for record in SeqIO.parse(input_file, input_format):
     new_record = True
@@ -82,7 +98,7 @@ for record in SeqIO.parse(input_file, input_format):
             if "UnknownPosition" in str(f.location):
                 pass
                 unknown = unknown + 1
-                print id_of_record, "had an unknown position TMH."
+                print(id_of_record, "had an unknown position TMH.")
             else:
 
                 full_sequence = str(record.seq)
@@ -297,40 +313,49 @@ for record in SeqIO.parse(input_file, input_format):
                     if total_tmd_count == 1:
                         number_of_records_single = number_of_records_single + 1
 
-                    # Pythonic language would usually concatenate all conditions onto one line, but for the sake of clarity, here we do it statement by statement.
-                    if len(tmh_sequence) >= minimum_tmd_length:
-                        if len(tmh_sequence) <= maximum_tmd_length:
-                            number_of_records_correct_length = number_of_records_correct_length + 1
+                        # Pythonic language would usually concatenate all
+                        # conditions onto one line, but for the sake of clarity,
+                        # here we do it statement by statement.
+                        if len(tmh_sequence) >= minimum_tmd_length:
+                            if len(tmh_sequence) <= maximum_tmd_length:
+                                length_correct_count=length_correct_count+1
+                                number_of_records_correct_length = number_of_records_correct_length + 1
 
 
 
-                            # Is this a single-pass protein?
-                            if total_tmd_count == 1:
-                                number_of_records_correct_length_single = number_of_records_correct_length_single + 1
+                                # Is this a single-pass protein?
+                                if total_tmd_count == 1:
 
-                                # Is the protien a splice isoform? (checking for non-terminal residue annotation)
-                                splice_isoform = False
-                                for i, f in enumerate(record.features):
-                                    if f.type == other_feature_type:
-                                        splice_isoform=True
-                                if splice_isoform == False:
+                                    number_of_records_correct_length_single = number_of_records_correct_length_single + 1
 
-                                    # Is the N-terminal cytoplasmic?
-                                    if "Inside" in n_terminal_start:
-                                        #print str(record.seq)
-                                        # Is the C-terminal within 25 residues of the final residue?
-                                        if abs(tmh_stop - len(str(record.seq))) < 26:
-                                            with open(output_filename, 'a') as my_file:
-                                                for i in tmh_record:
-                                                    my_file.write(str(i))
-                                                    my_file.write(",")
-                                                my_file.write("\n")
+                                    # Is the protien a splice isoform? (checking
+                                    # for non-terminal residue annotation)
+                                    splice_isoform = False
+                                    for i, f in enumerate(record.features):
+                                        if f.type == other_feature_type:
+                                            splice_isoform = True
+                                    if splice_isoform == False:
+                                        splice_isoform_count=splice_isoform_count+1
 
-                    else:
-                        length_exclusion_info = str(
-                            id_of_record) + "_" + str(tmd_count)
-                        length_excluded_tmds.append(
-                            length_exclusion_info)
+                                        # Is the N-terminal cytoplasmic?
+                                        if "Inside" in n_terminal_start:
+                                            n_terminal_count=n_terminal_count+1
+                                            # print str(record.seq)
+                                            # Is the C-terminal within 25 residues
+                                            # of the final residue?
+                                            if abs(tmh_stop - len(str(record.seq))) < 26:
+                                                c_terminal_near_end_count=c_terminal_near_end_count+1
+                                                with open(output_filename, 'a') as my_file:
+                                                    for i in tmh_record:
+                                                        my_file.write(str(i))
+                                                        my_file.write(",")
+                                                    my_file.write("\n")
+
+                        else:
+                            length_exclusion_info = str(
+                                id_of_record) + "_" + str(tmd_count)
+                            length_excluded_tmds.append(
+                                length_exclusion_info)
 
                 # No records should be here with none. This is for
                 # debugging only.
@@ -339,12 +364,19 @@ for record in SeqIO.parse(input_file, input_format):
                 else:
                     pass
 # General information regarding the output file useful as a log.
-print input_file, ", flank_clash_amendment_status:", flank_clash_amendment_status
-print "Number of TMHs in dataset (including multipass):", number_of_records
-print "Number of TMHs after dumping incorrect lengths (including multipass):", number_of_records_correct_length
-print "Single-pass"
-print "Total:", number_of_records_single
-print "After length exclusion:", number_of_records_correct_length_single
+print(input_file, ", flank_clash_amendment_status:", flank_clash_amendment_status)
+print("Number of TMHs in dataset (including multipass):", number_of_records)
+print("Number of TMHs after dumping incorrect lengths (including multipass):",
+      number_of_records_correct_length)
+print("Single-pass")
+print("Total:", number_of_records_single)
+print("After length exclusion:", number_of_records_correct_length_single)
+print("Records:", record_count)
+print("Records single pass:", single_pass_count)
+print("Records single pass length within range:", length_correct_count)
+print("Records single pass length within range not splice isoforms:", splice_isoform_count)
+print("Records single pass length within range not splice isoforms N terminal cytoplasmic:", n_terminal_count)
+print("Records single pass length within range not splice isoforms N terminal cytoplasmic tmh near c terminal:", c_terminal_near_end_count)
 
 exclusion_ids_output_filename = input_file.replace(
     ".txt", "_%s_flanklength_flankclash%s_logged_lengthexclusionIDs.txt" % (flank_length, str(flank_clash_amendment_status)))
@@ -356,3 +388,60 @@ for item in length_excluded_tmds:
         my_file.write(item)
         my_file.write("\n")
 my_file.closed
+
+'''
+### Now we generate the various biochemical values  based on the csv ###
+
+# These are the four perl scripts containing Jim Warwickers windowed
+# hydrophobicity scripts.
+
+output_hydrophobicity_filename = "%s_%s_hydrophobicity.csv" % (
+    scale, output_filename)
+single = []
+
+results = []
+
+with open(output_filename) as csv_inputfile:
+    for line in csv_inputfile:
+        results.append(line.strip().split(','))
+
+for entry in results:
+    if entry == results[0]:
+        pass
+    else:
+        # For reference this is the tmh record output
+        # tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
+        # full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank]
+        name = entry[0]
+        id = entry[1]
+        tmh_start_location = entry[2]
+        tmh_end_location = entry[3]
+        tmh_length = entry[4]
+        sequence = entry[5]
+        tmh_sequence = entry[6]
+        n_flank_sequence = entry[7]
+        c_flank_sequence = entry[8]
+        correction_number = 0
+
+        window_length=5
+        for sequence_position, residue in enumerate(tmh_sequence):
+            if sequence_position-(window_length-1)/2<1:
+                reidues_below=sequence_position
+            else:
+                reidues_below=window_length-1/2
+
+            if sequence_position-(window_length-1)/2>tmh_length:
+                residues_above=tmh_length-sequence_position
+            else:
+                reidues_above=window_length-1/2
+
+            sequence_slice=tmh_sequence[sequence_position-reidues_below:sequence_position+residues_above]
+            analysed_seq_slice = ProteinAnalysis(sequence_slice)
+            analysed_seq_slice.protein_scale(window_length,1)
+
+        with open(output_hydrophobicity_filename, 'a') as my_file:
+            for i in output_line:
+                my_file.write(str(i))
+                my_file.write(",")
+            my_file.write("\n")
+'''

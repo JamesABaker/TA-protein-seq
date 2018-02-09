@@ -11,8 +11,8 @@ import re
 
 
 #This opens a file (list.txt), replaces the formatting for the uniprot url handler
-f = open('inputs/list.txt', 'r')
-with open('inputs/list.txt') as file1list:
+f = open('list.txt', 'r')
+with open('list.txt') as file1list:
     fetch_TMs = file1list.readlines()
 fetch_TMs = list(fetch_TMs) #In order to handle each entry of the list text file it needs to be converted to a pythonic list.
 fetch_TMs = [fetch_TMs.replace('\n', '') for fetch_TMs in fetch_TMs] #removes new line artefacts of string.
