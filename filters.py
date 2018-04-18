@@ -46,7 +46,7 @@ output_filename = input_file.replace(".txt", ".csv")
 
 # The header row in the file.
 with open(output_filename, 'w') as my_file:
-    my_file.write("Name and description, ID, N terminal inside/outside, tmh start location, tmh end location, full protein sequence, tmh sequence, N flank sequence, C flank sequence, transmembrane helix sequential number, number of transmembrane helices in protein\n")
+    my_file.write("Name and description, ID, tmh start location, tmh end location, tmh length, full protein sequence, tmh sequence, N flank sequence, C flank sequence\n")
 my_file.closed
 
 # We need to check against nearby features to prevent overlapping
@@ -59,17 +59,17 @@ avoid_features = ["TRANSMEM", "INTRAMEM"]
 unknown = 0
 reliable_flank_length = flank_length
 
-record_count=0
-single_pass_count=0
-length_correct_count=0
-splice_isoform_count=0
-n_terminal_count=0
-c_terminal_near_end_count=0
-
+record_count = 0
+single_pass_count = 0
+length_correct_count = 0
+splice_isoform_count = 0
+n_terminal_count = 0
+c_terminal_near_end_count = 0
 
 
 # We iterate through each record, parsed by biopython.
 for record in SeqIO.parse(input_file, input_format):
+    fasta_written=False
     new_record = True
     tmd_count = 0
     for i, f in enumerate(record.features):
@@ -304,7 +304,7 @@ for record in SeqIO.parse(input_file, input_format):
 
                 if "Inside" in n_terminal_start or "Outside" in n_terminal_start:
                     # This is the information that will be written for the record.
-                    #+/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
+                    # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
                     tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
                                   full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank]
 
@@ -318,10 +318,8 @@ for record in SeqIO.parse(input_file, input_format):
                         # here we do it statement by statement.
                         if len(tmh_sequence) >= minimum_tmd_length:
                             if len(tmh_sequence) <= maximum_tmd_length:
-                                length_correct_count=length_correct_count+1
+                                length_correct_count = length_correct_count + 1
                                 number_of_records_correct_length = number_of_records_correct_length + 1
-
-
 
                                 # Is this a single-pass protein?
                                 if total_tmd_count == 1:
@@ -335,21 +333,27 @@ for record in SeqIO.parse(input_file, input_format):
                                         if f.type == other_feature_type:
                                             splice_isoform = True
                                     if splice_isoform == False:
-                                        splice_isoform_count=splice_isoform_count+1
+                                        splice_isoform_count = splice_isoform_count + 1
 
                                         # Is the N-terminal cytoplasmic?
                                         if "Inside" in n_terminal_start:
-                                            n_terminal_count=n_terminal_count+1
+                                            n_terminal_count = n_terminal_count + 1
                                             # print str(record.seq)
                                             # Is the C-terminal within 25 residues
                                             # of the final residue?
                                             if abs(tmh_stop - len(str(record.seq))) < 26:
-                                                c_terminal_near_end_count=c_terminal_near_end_count+1
+                                                c_terminal_near_end_count = c_terminal_near_end_count + 1
                                                 with open(output_filename, 'a') as my_file:
                                                     for i in tmh_record:
                                                         my_file.write(str(i))
                                                         my_file.write(",")
                                                     my_file.write("\n")
+                                                with open(output_filename_fasta, 'a') as filtered_fasta_file:
+                                                    if fasta_written==False:
+                                                        #This prevents several Fasta entries for the same record if splice isoforms exist.
+                                                        fasta_written=True
+                                                        fasta_record=str(">"+str(record.id)+"\n"+str(record.seq)+"\n")
+                                                        filtered_fasta_file.write(fasta_record)
 
                         else:
                             length_exclusion_info = str(
@@ -374,9 +378,11 @@ print("After length exclusion:", number_of_records_correct_length_single)
 print("Records:", record_count)
 print("Records single pass:", single_pass_count)
 print("Records single pass length within range:", length_correct_count)
-print("Records single pass length within range not splice isoforms:", splice_isoform_count)
+print("Records single pass length within range not splice isoforms:",
+      splice_isoform_count)
 print("Records single pass length within range not splice isoforms N terminal cytoplasmic:", n_terminal_count)
-print("Records single pass length within range not splice isoforms N terminal cytoplasmic tmh near c terminal:", c_terminal_near_end_count)
+print("Records single pass length within range not splice isoforms N terminal cytoplasmic tmh near c terminal:",
+      c_terminal_near_end_count)
 
 exclusion_ids_output_filename = input_file.replace(
     ".txt", "_%s_flanklength_flankclash%s_logged_lengthexclusionIDs.txt" % (flank_length, str(flank_clash_amendment_status)))
@@ -388,6 +394,11 @@ for item in length_excluded_tmds:
         my_file.write(item)
         my_file.write("\n")
 my_file.closed
+
+# Now we read the fasta file with a redundancy check.
+
+
+
 
 '''
 ### Now we generate the various biochemical values  based on the csv ###
