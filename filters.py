@@ -395,9 +395,6 @@ for item in length_excluded_tmds:
         my_file.write("\n")
 my_file.closed
 
-# Now we read the fasta file with a redundancy check.
-
-
 
 
 '''
