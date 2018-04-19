@@ -5,8 +5,8 @@ import numpy as np
 import subprocess
 import re
 
-
 print("This script was developed by James A Baker under the supervision of Dr Jim Warwicker.\nIt requires an active internet connection and an up to date version of biopython.\nSee readme.md for more information on installation and visit www.github.com/jbkr/TA_predict to report any errors.")
+print("The script filters a Uniprot txt file according to a set of rules that results in a list of tail anchored transmembrane helices.\n\n")
 
 input_file = str(sys.argv[1])
 flank_length = 5
