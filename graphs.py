@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
 header = ">Token_header"
 
 base_input_file = str(sys.argv[1])
@@ -14,29 +13,38 @@ comparison_input_file = str(sys.argv[2])
 
 list_of_files = [base_input_file, comparison_input_file]
 
-list_of_scales = ["hessa.pl", "ww.pl",
-                  "eisenberg.pl", "kd.pl"]
+# list_of_scales = ["hessa.pl", "ww.pl",
+#                  "eisenberg.pl", "kd.pl"]
+list_of_scales = ["kd.pl"]
+halfway_value_for_alignment = 0
+for file in list_of_files:
+
+    results = []
+
+    with open(file) as inputfile:
+        for line in inputfile:
+            results.append(line.strip().split(','))
+
+    halfway_value_for_alignment = 0
+    for entry in results:
+        if entry == results[0]:
+            pass
+        else:
+            tmh_sequence = entry[6]
+            n_flank_sequence = entry[7]
+
+            if len(n_flank_sequence) + (len(tmh_sequence) / 2) > halfway_value_for_alignment:
+                # the 0.5 is added in the case of an odd number.
+                # Int(float) rounds the float down. This would
+                # cause problems later since the full TMD lengths
+                # may go below the 0th vector position
+                halfway_value_for_alignment = int(
+                    len(n_flank_sequence) + (len(tmh_sequence) / 2) + 0.5)
 
 for scale in list_of_scales:
-    for file in list_of_files:
+    for file_number, file in enumerate(list_of_files):
         output_filename = "%s_%s_hydrophobicity.csv" % (scale, file)
-
-        results = []
-
-        with open(file) as inputfile:
-            for line in inputfile:
-                results.append(line.strip().split(','))
-
-        maximum_tmd_length = 0
-        for entry in results:
-            if entry == results[0]:
-                pass
-            else:
-                tmh_sequence = entry[6]
-                if len(tmh_sequence) > maximum_tmd_length:
-                    maximum_tmd_length = len(tmh_sequence)
-
-        max_sequence_length = maximum_tmd_length + 40
+        print
 
         for entry in results:
             if entry == results[0]:
@@ -46,14 +54,15 @@ for scale in list_of_scales:
                 id = entry[1]
                 tmh_start_location = entry[2]
                 tmh_end_location = entry[3]
-                sequence = entry[4]
-                tmh_sequence = entry[5]
-                n_flank_sequence = entry[6]
-                c_flank_sequence = entry[7]
+                tmh_length = entry[4]
+                sequence = entry[5]
+                tmh_sequence = entry[6]
+                n_flank_sequence = entry[7]
+                c_flank_sequence = entry[8]
 
                 correction_number = 0
 
-                #if "Outside" in str(n_terminal_start):
+                # if "Outside" in str(n_terminal_start):
                 #    tmh_unaltered_sequence = str(
                 #        n_flank_sequence) + str(tmh_sequence) + str(c_flank_sequence)
                 #    tmh_reversed_sequence = tmh_unaltered_sequence[::-1]
@@ -61,11 +70,11 @@ for scale in list_of_scales:
                 #        (maximum_tmd_length - len(tmh_sequence)) / 2 + (20 - len(c_flank_sequence)))
                 #    tmh_segment = tmh_reversed_sequence
 
-                #if "Inside" in str(n_terminal_start):
+                # if "Inside" in str(n_terminal_start):
                 tmh_unaltered_sequence = str(
                     n_flank_sequence) + str(tmh_sequence) + str(c_flank_sequence)
                 correction_number = (
-                    (maximum_tmd_length - len(tmh_sequence)) / 2 + (20 - len(n_flank_sequence)))
+                    (halfway_value_for_alignment - len(tmh_sequence)) / 2 + (len(n_flank_sequence)))
                 tmh_segment = tmh_unaltered_sequence
 
                 sequence = tmh_segment
@@ -96,22 +105,52 @@ for scale in list_of_scales:
                 result = result.replace(" -", ", -")
                 result = result.replace(",, -", ", -")
                 result = result.replace(",", "")
-                hydrophobicity=result
+                hydrophobicity = result
                 hydrophobicity = hydrophobicity.split()
                 for i in range(int(correction_number)):
                     hydrophobicity.insert(0, np.nan)
-                print hydrophobicity
+                hydrophobicity_converted = []
+                for n, i in enumerate(hydrophobicity):
+                    hydrophobicity_converted.append(float(i))
+                hydrophobicity = np.array(hydrophobicity_converted)
+                # print hydrophobicity
                 output_line = [id, correction_number, hydrophobicity]
                 with open(output_filename, 'a') as my_file:
                     for i in output_line:
                         my_file.write(str(i))
                         my_file.write(",")
-                if file == base_input_file:
-                    color = "gray"
-                else:
-                    color = "orange"
-                plt.plot(list(hydrophobicity), linestyle='-', marker='', linewidth=1, color=color)
+                    my_file.write("\n")
 
-plt.ylabel('Relative position.')
+                if file_number == 0:
+                    plt.plot(hydrophobicity, linestyle='-', marker='.',
+                             linewidth=0.5, color = "black", alpha=0.2)
+                else:
+                    plt.plot(hydrophobicity, linestyle='-', marker='.',
+                             linewidth=0.5, color = "blue", alpha=0.2)
+
+                # if len(hydrophobicity) > 30:
+                #    sequence_position = []
+                #    # Getting the position coordinates
+                #    for number, item in enumerate(range(0, len(hydrophobicity))):
+                #        value_for_position = number - halfway_value_for_alignment
+                #        sequence_position.append(value_for_position)
+                #        # The values go to +16 because we need to include the 0th position
+                #        positions = sequence_position[halfway_value_for_alignment - 15:halfway_value_for_alignment + 16]
+                #        positions = ''.join(str(positions))
+                #        positions = positions.replace("[", "")
+                #        positions = positions.replace("]", "")
+                #        positions = positions.replace(",", "")
+                #        positions = np.array(positions.split())
+
+                #print positions
+                # if len(hydrophobicity) == len(positions):
+                #    print "Length match confirmed."
+                # else:
+                #    print "length mismatch."
+                #plt.plot(positions, hydrophobicity, linestyle='-', marker='', linewidth=1, color=color)
+
+
+#pylab.xlim([-15, 15])
+plt.ylabel('hydrophobicity')
+plt.xlabel('position')
 plt.show()
-my_file.write("\n")
