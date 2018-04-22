@@ -17,10 +17,10 @@ list_of_files = [base_input_file, comparison_input_file]
 #                  "eisenberg.pl", "kd.pl"]
 list_of_scales = ["kd.pl"]
 halfway_value_for_alignment = 0
+
+
 for file in list_of_files:
-
     results = []
-
     with open(file) as inputfile:
         for line in inputfile:
             results.append(line.strip().split(','))
@@ -42,10 +42,13 @@ for file in list_of_files:
                     len(n_flank_sequence) + (len(tmh_sequence) / 2) + 0.5)
 
 for scale in list_of_scales:
-    for file_number, file in enumerate(list_of_files):
+    for file in list_of_files:
         output_filename = "%s_%s_hydrophobicity.csv" % (scale, file)
-        print
-
+        print "calculating hydrophobicity for", file
+        results = []
+        with open(file) as inputfile:
+            for line in inputfile:
+                results.append(line.strip().split(','))
         for entry in results:
             if entry == results[0]:
                 pass
@@ -115,39 +118,20 @@ for scale in list_of_scales:
                 hydrophobicity = np.array(hydrophobicity_converted)
                 # print hydrophobicity
                 output_line = [id, correction_number, hydrophobicity]
-                with open(output_filename, 'a') as my_file:
-                    for i in output_line:
-                        my_file.write(str(i))
-                        my_file.write(",")
-                    my_file.write("\n")
+                #with open(output_filename, 'a') as my_file:
+                #    for i in output_line:
+                #        my_file.write(str(i))
+                #        my_file.write(",")
+                #    my_file.write("\n")
 
-                if file_number == 0:
+                #if file_number == 0:
+                if file == base_input_file:
                     plt.plot(hydrophobicity, linestyle='-', marker='.',
-                             linewidth=0.5, color = "black", alpha=0.2)
-                else:
+                             linewidth=0.5, color = "gray", alpha=0.1)
+
+                elif file != base_input_file:
                     plt.plot(hydrophobicity, linestyle='-', marker='.',
-                             linewidth=0.5, color = "blue", alpha=0.2)
-
-                # if len(hydrophobicity) > 30:
-                #    sequence_position = []
-                #    # Getting the position coordinates
-                #    for number, item in enumerate(range(0, len(hydrophobicity))):
-                #        value_for_position = number - halfway_value_for_alignment
-                #        sequence_position.append(value_for_position)
-                #        # The values go to +16 because we need to include the 0th position
-                #        positions = sequence_position[halfway_value_for_alignment - 15:halfway_value_for_alignment + 16]
-                #        positions = ''.join(str(positions))
-                #        positions = positions.replace("[", "")
-                #        positions = positions.replace("]", "")
-                #        positions = positions.replace(",", "")
-                #        positions = np.array(positions.split())
-
-                #print positions
-                # if len(hydrophobicity) == len(positions):
-                #    print "Length match confirmed."
-                # else:
-                #    print "length mismatch."
-                #plt.plot(positions, hydrophobicity, linestyle='-', marker='', linewidth=1, color=color)
+                             linewidth=0.5, color = "blue", alpha=0.1)
 
 
 #pylab.xlim([-15, 15])
