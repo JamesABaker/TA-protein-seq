@@ -5,9 +5,6 @@ import numpy as np
 import subprocess
 import re
 
-print("This script was developed by James A Baker under the supervision of Dr Jim Warwicker.\nIt requires an active internet connection and an up to date version of biopython.\nSee readme.md for more information on installation and visit www.github.com/jbkr/TA_predict to report any errors.")
-print("The script filters a Uniprot txt file according to a set of rules that results in a list of tail anchored transmembrane helices.\n\n")
-
 input_file = str(sys.argv[1])
 flank_length = 5
 # This works with uniprot filetype. From the seqIO biopython wiki:
@@ -19,7 +16,7 @@ input_format = "swiss"
 feature_type = "TRANSMEM"
 # Simply the output name, can be anything as it is written in binary (not
 # file-type specific language).
-output_filename_fasta = "TMD.fasta"
+output_filename_fasta = str("TMD"+str(input_file)+".fasta")
 other_feature_type = "NON-TER"
 signal_feature = "SIGNAL"
 subcellular_location = "TOPO_DOM"
@@ -65,13 +62,14 @@ length_correct_count = 0
 splice_isoform_count = 0
 n_terminal_count = 0
 c_terminal_near_end_count = 0
-
+no_signal_sequence_count = 0
 
 # We iterate through each record, parsed by biopython.
 for record in SeqIO.parse(input_file, input_format):
     fasta_written=False
     new_record = True
     tmd_count = 0
+    signal_sequence=False
     for i, f in enumerate(record.features):
         if f.type == feature_type:
 
@@ -206,50 +204,10 @@ for record in SeqIO.parse(input_file, input_format):
                         else:
                             c_terminal_flank = str(
                                 record.seq[(f.location.end):(f.location.end + int(flank2_length))])
+                    if each_features.type == signal_feature:
+                        signal_sequence =True
 
-                # Now, the orientation is determined for all features
-                # according to the cytoplasmic annotation. The total
-                # number of cytoplasmic annotations, and non
-                # cytoplasmic annotations are counted, and depending on
-                # the starting locations falling "inside" or "outside" the cytoplasm,
-                # the orientation is determined.
 
-                list_of_cyto_starts = []
-                list_of_non_cyto_starts = []
-
-                for feature_number, other_features in enumerate(record.features):
-
-                    # Some features contain unknown locations. These are
-                    # discarded.
-                    if "UnknownPosition" in str(other_features.location):
-                        pass
-                    else:
-                        # If the feature matches the cytoplasm...
-                        if other_features.type == subcellular_location:
-                            if "Cytoplasmic" in str(other_features.qualifiers):
-
-                                # The feature start locations are
-                                # recorded as being cytoplasmic or not.
-                                # This, combined with knowing the start
-                                # location, allows us to go through the
-                                # TMHs and figure out which way each is
-                                # oriented quickly.
-                                list_of_cyto_starts.append(
-                                    int(other_features.location.start))
-
-                                total_tmd_count = 0
-                                for number_of_features, a_feature in enumerate(record.features):
-
-                                    if a_feature.type == feature_type:
-                                        total_tmd_count = total_tmd_count + 1
-
-                                new_record = False
-
-                            else:
-                                list_of_non_cyto_starts.append(
-                                    int(other_features.location.start))
-                        else:
-                            pass
 
                 # We will now check if the residues preceding the
                 # TMD are intra, or extra cytoplasmic. Because this
@@ -268,7 +226,53 @@ for record in SeqIO.parse(input_file, input_format):
 
                 # If the previous method did not work to identify topology, we can still
                 # imply the topology.
+
+
                 if n_terminal_start == "None":
+
+                    # Now, the orientation is determined for all features
+                    # according to the cytoplasmic annotation. The total
+                    # number of cytoplasmic annotations, and non
+                    # cytoplasmic annotations are counted, and depending on
+                    # the starting locations falling "inside" or "outside" the cytoplasm,
+                    # the orientation is determined.
+
+                    list_of_cyto_starts = []
+                    list_of_non_cyto_starts = []
+
+                    for feature_number, other_features in enumerate(record.features):
+
+                        # Some features contain unknown locations. These are
+                        # discarded.
+                        if "UnknownPosition" in str(other_features.location):
+                            pass
+                        else:
+                            # If the feature matches the cytoplasm...
+                            if other_features.type == subcellular_location:
+                                if "Cytoplasmic" in str(other_features.qualifiers):
+
+                                    # The feature start locations are
+                                    # recorded as being cytoplasmic or not.
+                                    # This, combined with knowing the start
+                                    # location, allows us to go through the
+                                    # TMHs and figure out which way each is
+                                    # oriented quickly.
+                                    list_of_cyto_starts.append(
+                                        int(other_features.location.start))
+
+                                    total_tmd_count = 0
+                                    for number_of_features, a_feature in enumerate(record.features):
+
+                                        if a_feature.type == feature_type:
+                                            total_tmd_count = total_tmd_count + 1
+
+                                    new_record = False
+
+                                else:
+                                    list_of_non_cyto_starts.append(
+                                        int(other_features.location.start))
+                            else:
+                                pass
                     # This checks that the subcellular starting
                     # locations exist.
                     if len(list_of_cyto_starts) > 0 and len(list_of_non_cyto_starts) > 0:
@@ -335,25 +339,29 @@ for record in SeqIO.parse(input_file, input_format):
                                     if splice_isoform == False:
                                         splice_isoform_count = splice_isoform_count + 1
 
-                                        # Is the N-terminal cytoplasmic?
-                                        if "Inside" in n_terminal_start:
-                                            n_terminal_count = n_terminal_count + 1
-                                            # print str(record.seq)
-                                            # Is the C-terminal within 25 residues
-                                            # of the final residue?
-                                            if abs(tmh_stop - len(str(record.seq))) < 26:
-                                                c_terminal_near_end_count = c_terminal_near_end_count + 1
-                                                with open(output_filename, 'a') as my_file:
-                                                    for i in tmh_record:
-                                                        my_file.write(str(i))
-                                                        my_file.write(",")
-                                                    my_file.write("\n")
-                                                with open(output_filename_fasta, 'a') as filtered_fasta_file:
-                                                    if fasta_written==False:
-                                                        #This prevents several Fasta entries for the same record if splice isoforms exist.
-                                                        fasta_written=True
-                                                        fasta_record=str(">"+str(record.id)+"\n"+str(record.seq)+"\n")
-                                                        filtered_fasta_file.write(fasta_record)
+                                        if signal_sequence == False:
+                                            no_signal_sequence_count=no_signal_sequence_count+1
+
+                                            # Is the N-terminal cytoplasmic?
+                                            if "Inside" in n_terminal_start:
+                                                n_terminal_count = n_terminal_count + 1
+                                                # print str(record.seq)
+                                                # Is the C-terminal within 25 residues
+                                                # of the final residue?
+                                                if abs(int(tmh_stop) - (len(str(record.seq)))) <= 25:
+                                                #if abs(tmh_stop - len(record.seq.end)) < 26:
+                                                    c_terminal_near_end_count = c_terminal_near_end_count + 1
+                                                    with open(output_filename, 'a') as my_file:
+                                                        for i in tmh_record:
+                                                            my_file.write(str(i))
+                                                            my_file.write(",")
+                                                        my_file.write("\n")
+                                                    with open(output_filename_fasta, 'a') as filtered_fasta_file:
+                                                        if fasta_written==False:
+                                                            #This prevents several Fasta entries for the same record if splice isoforms exist.
+                                                            fasta_written=True
+                                                            fasta_record=str(">"+str(record.id)+"\n"+str(record.seq)+"\n")
+                                                            filtered_fasta_file.write(fasta_record)
 
                         else:
                             length_exclusion_info = str(
@@ -374,14 +382,12 @@ print("Number of TMHs after dumping incorrect lengths (including multipass):",
       number_of_records_correct_length)
 print("Single-pass")
 print("Total:", number_of_records_single)
-print("After length exclusion:", number_of_records_correct_length_single)
-print("Records:", record_count)
-print("Records single pass:", single_pass_count)
 print("Records single pass length within range:", length_correct_count)
 print("Records single pass length within range not splice isoforms:",
       splice_isoform_count)
-print("Records single pass length within range not splice isoforms N terminal cytoplasmic:", n_terminal_count)
-print("Records single pass length within range not splice isoforms N terminal cytoplasmic tmh near c terminal:",
+print("Records single pass length within range not splice isoforms no signal sequence:", no_signal_sequence_count)
+print("Records single pass length within range not splice isoforms no signal sequence N terminal cytoplasmic:", n_terminal_count)
+print("Records single pass length within range not splice isoforms no signal sequence N terminal cytoplasmic tmh near c terminal:",
       c_terminal_near_end_count)
 
 exclusion_ids_output_filename = input_file.replace(
