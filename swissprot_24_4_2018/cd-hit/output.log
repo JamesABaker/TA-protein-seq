@@ -4,13 +4,13 @@ Command: /home/oasis/data/NGS-ann-project/apps/bin/cd-hit -i
          input.0 -o cd-hit/output -c 0.9 -n 5 -d 0 -p 1 -T 4 -M
          16000 -d 0 -n 5 -p 1 -G 0 -c 0.9 -aS 0.8
 
-Started: Wed Apr 18 14:44:52 2018
+Started: Tue Apr 24 17:08:58 2018
 ================================================================
                             Output                              
 ----------------------------------------------------------------
-total seq: 618
+total seq: 615
 longest and shortest : 3259 and 31
-Total letters: 156983
+Total letters: 156389
 Sequences have been sorted
 
 Approximated minimal memory consumption:
@@ -22,16 +22,16 @@ Total           : 175M
 
 Table limit with the given memory limit:
 Max number of representatives: 4000000
-Max number of word counting entries: 1978035752
+Max number of word counting entries: 1978035903
 
-# comparing sequences from          0  to        618
----------- new table with      442 representatives
+# comparing sequences from          0  to        615
+---------- new table with      443 representatives
 
-      618  finished        442  clusters
+      615  finished        443  clusters
 
 Apprixmated maximum memory consumption: 176M
 writing new database
 writing clustering information
 program completed !
 
-Total CPU time 0.22
+Total CPU time 0.26

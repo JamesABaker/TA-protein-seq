@@ -16,7 +16,7 @@ input_format = "swiss"
 feature_type = "TRANSMEM"
 # Simply the output name, can be anything as it is written in binary (not
 # file-type specific language).
-output_filename_fasta = str("TMD"+str(input_file)+".fasta")
+output_filename_fasta = str(str(input_file)+"filtered.fasta")
 other_feature_type = "NON-TER"
 signal_feature = "SIGNAL"
 subcellular_location = "TOPO_DOM"
@@ -70,6 +70,7 @@ for record in SeqIO.parse(input_file, input_format):
     new_record = True
     tmd_count = 0
     signal_sequence=False
+    total_tmd_count = 0
     for i, f in enumerate(record.features):
         if f.type == feature_type:
 

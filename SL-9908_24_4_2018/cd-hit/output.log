@@ -1,0 +1,51 @@
+================================================================
+Program: CD-HIT, V4.7 (+OpenMP), Jul 09 2017, 23:50:55
+Command: /home/oasis/data/NGS-ann-project/apps/bin/cd-hit -i
+         input.0 -o cd-hit/output -c 0.9 -n 5 -d 0 -p 1 -T 4 -M
+         16000 -d 0 -n 5 -p 1 -G 0 -c 0.9 -aS 0.8
+
+Started: Tue Apr 24 19:02:44 2018
+================================================================
+                            Output                              
+----------------------------------------------------------------
+total seq: 2460
+longest and shortest : 8799 and 25
+Total letters: 1095686
+Sequences have been sorted
+
+Approximated minimal memory consumption:
+Sequence        : 1M
+Buffer          : 4 X 12M = 49M
+Table           : 2 X 65M = 130M
+Miscellaneous   : 0M
+Total           : 181M
+
+Table limit with the given memory limit:
+Max number of representatives: 4000000
+Max number of word counting entries: 1977272975
+
+# comparing sequences from          0  to        410
+---------- new table with      202 representatives
+# comparing sequences from        410  to        751
+...................----------    120 remaining sequences to the next cycle
+---------- new table with      100 representatives
+# comparing sequences from        631  to        935
+...........---------- new table with       90 representatives
+# comparing sequences from        935  to       1189
+.............---------- new table with       76 representatives
+# comparing sequences from       1189  to       1400
+......---------- new table with       55 representatives
+# comparing sequences from       1400  to       1576
+....................----------     35 remaining sequences to the next cycle
+---------- new table with      100 representatives
+# comparing sequences from       1541  to       2460
+.....................---------- new table with      494 representatives
+
+     2460  finished       1117  clusters
+
+Apprixmated maximum memory consumption: 183M
+writing new database
+writing clustering information
+program completed !
+
+Total CPU time 1.59

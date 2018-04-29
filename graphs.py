@@ -8,18 +8,28 @@ import numpy as np
 
 header = ">Token_header"
 
-base_input_file = str(sys.argv[1])
-comparison_input_file = str(sys.argv[2])
+#base_input_file = str(sys.argv[1])
+#comparison_input_file = str(sys.argv[2])
 
-list_of_files = [base_input_file, comparison_input_file]
+list_of_files = sys.argv[1:]
+print(list_of_files)
+
+color_list=[
+            ("#840000"),
+            ("#6b8ba4"),
+            ("#fac205"),
+            ("#658b38"),
+            ("#caa0ff"),
+            ]
 
 # list_of_scales = ["hessa.pl", "ww.pl",
 #                  "eisenberg.pl", "kd.pl"]
+
 list_of_scales = ["kd.pl"]
 halfway_value_for_alignment = 0
+longest_tmh = 0
 
-
-for file in list_of_files:
+for file_number, file in enumerate(list_of_files):
     results = []
     with open(file) as inputfile:
         for line in inputfile:
@@ -32,6 +42,7 @@ for file in list_of_files:
         else:
             tmh_sequence = entry[6]
             n_flank_sequence = entry[7]
+            c_flank_sequence = entry[8]
 
             if len(n_flank_sequence) + (len(tmh_sequence) / 2) > halfway_value_for_alignment:
                 # the 0.5 is added in the case of an odd number.
@@ -40,9 +51,20 @@ for file in list_of_files:
                 # may go below the 0th vector position
                 halfway_value_for_alignment = int(
                     len(n_flank_sequence) + (len(tmh_sequence) / 2) + 0.5)
+            if len(n_flank_sequence) + len(tmh_sequence) + len(c_flank_sequence) > longest_tmh:
+                longest_tmh = len(n_flank_sequence) + len(tmh_sequence) + len(c_flank_sequence) +1 #For zero base counting
 
 for scale in list_of_scales:
-    for file in list_of_files:
+    average_scales = []
+    list_of_all_hydrophobicity_vectors =[]
+    for file_number, file in enumerate(list_of_files):
+
+
+        # This generates an empty list for each potential possition. Values of hydrophobicity will be added to this later and will contribute to the average.
+        all_hydrophobicity_vectors=[]
+        for n in range(longest_tmh):
+            all_hydrophobicity_vectors.append([])
+
         output_filename = "%s_%s_hydrophobicity.csv" % (scale, file)
         print "calculating hydrophobicity for", file
         results = []
@@ -62,20 +84,13 @@ for scale in list_of_scales:
                 tmh_sequence = entry[6]
                 n_flank_sequence = entry[7]
                 c_flank_sequence = entry[8]
-
                 correction_number = 0
 
-                # if "Outside" in str(n_terminal_start):
-                #    tmh_unaltered_sequence = str(
-                #        n_flank_sequence) + str(tmh_sequence) + str(c_flank_sequence)
-                #    tmh_reversed_sequence = tmh_unaltered_sequence[::-1]
-                #    correction_number = (
-                #        (maximum_tmd_length - len(tmh_sequence)) / 2 + (20 - len(c_flank_sequence)))
-                #    tmh_segment = tmh_reversed_sequence
-
-                # if "Inside" in str(n_terminal_start):
+                # This assumes that the filters have already been applied and that only the n terminal will be the flank.
                 tmh_unaltered_sequence = str(
                     n_flank_sequence) + str(tmh_sequence) + str(c_flank_sequence)
+
+                #The alignment seems off, check this since it could be a mathemtatical or biological artefact.
                 correction_number = (
                     (halfway_value_for_alignment - len(tmh_sequence)) / 2 + (len(n_flank_sequence)))
                 tmh_segment = tmh_unaltered_sequence
@@ -116,25 +131,57 @@ for scale in list_of_scales:
                 for n, i in enumerate(hydrophobicity):
                     hydrophobicity_converted.append(float(i))
                 hydrophobicity = np.array(hydrophobicity_converted)
-                # print hydrophobicity
-                output_line = [id, correction_number, hydrophobicity]
-                #with open(output_filename, 'a') as my_file:
-                #    for i in output_line:
-                #        my_file.write(str(i))
-                #        my_file.write(",")
-                #    my_file.write("\n")
 
-                #if file_number == 0:
-                if file == base_input_file:
-                    plt.plot(hydrophobicity, linestyle='-', marker='.',
-                             linewidth=0.5, color = "gray", alpha=0.1)
+                #Now we calculate the positions to plot on the X axis in relation to these vectors.
+                positions_for_line=[]
+                for n, item in enumerate(hydrophobicity):
+                    positions_for_line.append(n-halfway_value_for_alignment-1) #Base 0 counting
 
-                elif file != base_input_file:
-                    plt.plot(hydrophobicity, linestyle='-', marker='.',
-                             linewidth=0.5, color = "blue", alpha=0.1)
+                plt.plot(positions_for_line, hydrophobicity, linestyle='', marker='.',
+                         linewidth=0.5, color = color_list[file_number], alpha=(1/len(results)*len(results)/10))
+
+                for position, hydrophobicity_value in enumerate(hydrophobicity):
+                    #if str(hydrophobicity_value) != str("nan"):
+                    all_hydrophobicity_vectors[position].append(hydrophobicity_value)
+
+        averaged_hydrophobicities=[]
+        list_of_all_hydrophobicity_vectors.append(np.array(all_hydrophobicity_vectors))
+        for i in all_hydrophobicity_vectors:
+            if len(i)>20:
+                averaged_hydrophobicities.append(np.mean(i))
+            else:
+                averaged_hydrophobicities.append(np.mean(np.nan))
+        average_scales.append(averaged_hydrophobicities)
 
 
-#pylab.xlim([-15, 15])
-plt.ylabel('hydrophobicity')
-plt.xlabel('position')
-plt.show()
+    for line_number, line in enumerate(average_scales):
+        positions_for_line=[]
+        for n, item in enumerate(line):
+            positions_for_line.append(n-halfway_value_for_alignment-1)#base 0 counting
+        plt.plot(positions_for_line, line, linestyle='-', marker='x',
+            linewidth=1, color = color_list[line_number], alpha=1)
+
+    #for file_number, dataset in enumerate(list_of_all_hydrophobicity_vectors):
+
+    #    dataset_to_plot = []
+    #    for i in dataset:
+    #        if len(i)>0:
+    #            dataset_to_plot.append(i)
+    #        elif len(i)==0:
+    #            dataset_to_plot.append(np.array([np.nan, np.nan]))
+    #
+    #    violin_parts=plt.violinplot(dataset_to_plot, positions_for_line, widths=0.5,
+    #                  showmeans=False, showextrema=True, showmedians=False,
+    #                  bw_method='silverman')
+    #    for pc in violin_parts['bodies']:
+    #        pc.set_color("black")
+
+
+
+
+
+
+    plt.xlim([-15, 15])
+    plt.ylabel('hydrophobicity')
+    plt.xlabel('position')
+    plt.show()

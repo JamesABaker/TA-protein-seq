@@ -1,5 +1,5 @@
-Wed Apr 18 07:48:32 PDT 2018
+Tue Apr 24 11:57:17 PDT 2018
 program	cd-hit
-Seqfile	TMD.fasta
+Seqfile	SL-9908_24-4-2018.fasta
 Parameter set	-d 0 -n 5 -p 1 -G 0 -c 0.9 -aS 0.8
 

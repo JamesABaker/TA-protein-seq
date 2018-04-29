@@ -1,0 +1,5 @@
+Tue Apr 24 10:11:45 PDT 2018
+program	cd-hit
+Seqfile	TMDSwissProt_24_4_2018.txt.fasta
+Parameter set	-d 0 -n 5 -p 1 -G 0 -c 0.9 -aS 0.8
+
