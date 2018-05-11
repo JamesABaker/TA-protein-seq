@@ -162,20 +162,6 @@ for scale in list_of_scales:
         plt.plot(positions_for_line, line, linestyle='-', marker='',
             linewidth=1, color = color_list[line_number], alpha=1)
 
-    #for file_number, dataset in enumerate(list_of_all_hydrophobicity_vectors):
-
-    #    dataset_to_plot = []
-    #    for i in dataset:
-    #        if len(i)>0:
-    #            dataset_to_plot.append(i)
-    #        elif len(i)==0:
-    #            dataset_to_plot.append(np.array([np.nan, np.nan]))
-    #
-    #    violin_parts=plt.violinplot(dataset_to_plot, positions_for_line, widths=0.5,
-    #                  showmeans=False, showextrema=True, showmedians=False,
-    #                  bw_method='silverman')
-    #    for pc in violin_parts['bodies']:
-    #        pc.set_color("black")
     for index, number in enumerate(positions_for_line):
         if number == 0:
             central_index=index

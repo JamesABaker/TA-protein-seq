@@ -32,6 +32,7 @@ def hydrophobicity_calculation(sequence):
         'V' : 4.2,
         'W' : - 0.9,
         'Y' : - 1.3,
+        'X' : np.nan
     }
     residue_hydrophobicities = []
     for residue in sequence:
@@ -66,6 +67,8 @@ def disorder_calculation(sequence):
         'V' : - 0.38618,
         'W' : - 0.24338,
         'Y' : - 0.20751,
+        'X' : np.nan
+
     }
     residue_disorder = []
     for residue in sequence:

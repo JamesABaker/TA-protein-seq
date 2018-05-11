@@ -9,20 +9,19 @@ def stats(list1, list2):
     print(scipy.stats.ks_2samp(list1, list2))
     print(scipy.stats.ttest_ind(list1, list2))
 
-
 list_of_files = sys.argv[1:]
-disorder_comparison_sets = []
-hydrophobicity_comparison_sets = []
-flanks_disorder_comparison_sets = []
-flanks_hydrophobicity_comparison_sets = []
+disorder_sets = []
+hydrophobicity_sets = []
+flanks_disorder_sets = []
+flanks_hydrophobicity_sets = []
 
 for file_number, file in enumerate(list_of_files):
       # This generates an empty list for each potential possition. Values of hydrophobicity will be added to this later and will contribute to the average.
     results = []
-    disorder_comparison_set = []
-    hydrophobicity_comparison_set = []
-    flanks_disorder_comparison_set = []
-    flanks_hydrophobicity_comparison_set = []
+    disorder_set = []
+    hydrophobicity_set = []
+    flanks_disorder_set = []
+    flanks_hydrophobicity_set = []
     with open(file) as inputfile:
       for line in inputfile:
           results.append(line.strip().split(','))
@@ -44,24 +43,24 @@ for file_number, file in enumerate(list_of_files):
           tmh_disorder = float(entry[11])
           tmh_flank_disorder = float(entry[12])
 
-          disorder_comparison_set.append(tmh_disorder)
-          hydrophobicity_comparison_set.append(tmh_hydrophobicity)
-          flanks_disorder_comparison_set.append(tmh_flank_disorder)
-          flanks_hydrophobicity_comparison_set.append(tmh_flank_hydrophobicity)
-    disorder_comparison_sets.append(disorder_comparison_set)
-    hydrophobicity_comparison_sets.append(hydrophobicity_comparison_set)
-    flanks_disorder_comparison_sets.append(flanks_disorder_comparison_set)
-    flanks_hydrophobicity_comparison_sets.append(flanks_hydrophobicity_comparison_set)
+          disorder_set.append(tmh_disorder)
+          hydrophobicity_set.append(tmh_hydrophobicity)
+          flanks_disorder_set.append(tmh_flank_disorder)
+          flanks_hydrophobicity_set.append(tmh_flank_hydrophobicity)
+    disorder_sets.append(disorder_set)
+    hydrophobicity_sets.append(hydrophobicity_set)
+    flanks_disorder_sets.append(flanks_disorder_set)
+    flanks_hydrophobicity_sets.append(flanks_hydrophobicity_set)
 
 
 print("\n\nDisorder of TMH\n")
-stats(disorder_comparison_sets[0], disorder_comparison_sets[1])
+stats(disorder_sets[0], disorder_sets[1])
 
 print("\n\nHydrophobicity of TMH\n")
-stats(hydrophobicity_comparison_sets[0], hydrophobicity_comparison_sets[1])
+stats(hydrophobicity_sets[0], hydrophobicity_sets[1])
 
 print("\n\nDisorder of TMH and flanks\n")
-stats(flanks_disorder_comparison_sets[0], hydrophobicity_comparison_sets[1])
+stats(flanks_disorder_sets[0], hydrophobicity_sets[1])
 
 print("\n\nHydrophobicity of TMH and flanks\n")
-stats(flanks_hydrophobicity_comparison_sets[0], hydrophobicity_comparison_sets[1])
+stats(flanks_hydrophobicity_sets[0], hydrophobicity_sets[1])
