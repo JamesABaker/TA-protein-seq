@@ -375,7 +375,7 @@ for record in SeqIO.parse(input_file, input_format):
                 if "Inside" in n_terminal_start or "Outside" in n_terminal_start:
                     # This is the information that will be written for the record.
                     # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
-    tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1, full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
+                    tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1, full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
 
                     number_of_records = number_of_records + 1
 
