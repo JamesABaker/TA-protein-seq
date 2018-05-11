@@ -5,6 +5,114 @@ import numpy as np
 import subprocess
 import re
 
+
+def hydrophobicity_calculation(sequence):
+    '''
+    Calculates the hydrophobicity of a string of amino acids"
+    '''
+    sequence = sequence.split()
+    hydrophobicitiy_conversion = {
+        'A'
+        1.8,
+        'C'
+        2.5,
+        'D'
+        - 3.5,
+        'E'
+        - 3.5,
+        'F'
+        2.8,
+        'G'
+        - 0.4,
+        'H'
+        - 3.2,
+        'I'
+        4.5,
+        'K'
+        - 3.9,
+        'L'
+        3.8,
+        'M'
+        1.9,
+        'N'
+        - 3.5,
+        'P'
+        - 1.6,
+        'Q'
+        - 3.5,
+        'R'
+        - 4.5,
+        'S'
+        - 0.8,
+        'T'
+        - 0.7,
+        'V'
+        4.2,
+        'W'
+        - 0.9,
+        'Y'
+        - 1.3,
+    }
+    residue_hydrophobicities = []
+    for residue in sequence:
+        residue_hydrophobicities.append(
+            hydrophobicitiy_conversion[str(residue)])
+    return np.mean(residue_hydrophobicities)
+
+
+def disorder_calculation(sequence):
+    '''
+    Calculates the disorder of a string of amino acids"
+    '''
+    sequence = sequence.split()
+    disorder_conversion = {
+        'A'
+        - 0.26154,
+        'C'
+        - 0.01515,
+        'D'
+        0.22763,
+        'E'
+        - 0.20469,
+        'F'
+        - 0.22557,
+        'G'
+        0.43323,
+        'H'
+        - 0.00122,
+        'I'
+        - 0.42224,
+        'K'
+        - 0.10009,
+        'L'
+        - 0.33793,
+        'M'
+        - 0.22590,
+        'N'
+        0.22989,
+        'P'
+        0.55232,
+        'Q'
+        - 0.18768,
+        'R'
+        - 0.17659,
+        'S'
+        0.14288,
+        'T'
+        0.00888,
+        'V'
+        - 0.38618,
+        'W'
+        - 0.24338,
+        'Y'
+        - 0.20751,
+    }
+    residue_disorder = []
+    for residue in sequence:
+        residue_disorder.append(disorder_conversion[str(residue)])
+    return np.mean(residue_disorder)
+
+
 input_file = str(sys.argv[1])
 flank_length = 5
 # This works with uniprot filetype. From the seqIO biopython wiki:
@@ -16,7 +124,7 @@ input_format = "swiss"
 feature_type = "TRANSMEM"
 # Simply the output name, can be anything as it is written in binary (not
 # file-type specific language).
-output_filename_fasta = str(str(input_file)+"filtered.fasta")
+output_filename_fasta = str(str(input_file) + "filtered.fasta")
 other_feature_type = "NON-TER"
 signal_feature = "SIGNAL"
 subcellular_location = "TOPO_DOM"
@@ -43,7 +151,7 @@ output_filename = input_file.replace(".txt", ".csv")
 
 # The header row in the file.
 with open(output_filename, 'w') as my_file:
-    my_file.write("Name and description, ID, tmh start location, tmh end location, tmh length, full protein sequence, tmh sequence, N flank sequence, C flank sequence\n")
+    my_file.write("Name and description, ID, tmh start location, tmh end location, tmh length, full protein sequence, tmh sequence, N flank sequence, C flank sequence, Hydrophobicity of TMH, Hydrophobicity of TMH and flanks, Disorder of TMH, Disorder of TMH and flanks,  \n")
 my_file.closed
 
 # We need to check against nearby features to prevent overlapping
@@ -66,10 +174,10 @@ no_signal_sequence_count = 0
 
 # We iterate through each record, parsed by biopython.
 for record in SeqIO.parse(input_file, input_format):
-    fasta_written=False
+    fasta_written = False
     new_record = True
     tmd_count = 0
-    signal_sequence=False
+    signal_sequence = False
     total_tmd_count = 0
     for i, f in enumerate(record.features):
         if f.type == feature_type:
@@ -206,9 +314,7 @@ for record in SeqIO.parse(input_file, input_format):
                             c_terminal_flank = str(
                                 record.seq[(f.location.end):(f.location.end + int(flank2_length))])
                     if each_features.type == signal_feature:
-                        signal_sequence =True
-
-
+                        signal_sequence = True
 
                 # We will now check if the residues preceding the
                 # TMD are intra, or extra cytoplasmic. Because this
@@ -227,7 +333,6 @@ for record in SeqIO.parse(input_file, input_format):
 
                 # If the previous method did not work to identify topology, we can still
                 # imply the topology.
-
 
                 if n_terminal_start == "None":
 
@@ -311,7 +416,7 @@ for record in SeqIO.parse(input_file, input_format):
                     # This is the information that will be written for the record.
                     # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
                     tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
-                                  full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank]
+                                  full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_flank))]
 
                     number_of_records = number_of_records + 1
 
@@ -341,7 +446,7 @@ for record in SeqIO.parse(input_file, input_format):
                                         splice_isoform_count = splice_isoform_count + 1
 
                                         if signal_sequence == False:
-                                            no_signal_sequence_count=no_signal_sequence_count+1
+                                            no_signal_sequence_count = no_signal_sequence_count + 1
 
                                             # Is the N-terminal cytoplasmic?
                                             if "Inside" in n_terminal_start:
@@ -350,19 +455,22 @@ for record in SeqIO.parse(input_file, input_format):
                                                 # Is the C-terminal within 25 residues
                                                 # of the final residue?
                                                 if abs(int(tmh_stop) - (len(str(record.seq)))) <= 25:
-                                                #if abs(tmh_stop - len(record.seq.end)) < 26:
+                                                    # if abs(tmh_stop - len(record.seq.end)) < 26:
                                                     c_terminal_near_end_count = c_terminal_near_end_count + 1
                                                     with open(output_filename, 'a') as my_file:
                                                         for i in tmh_record:
-                                                            my_file.write(str(i))
+                                                            my_file.write(
+                                                                str(i))
                                                             my_file.write(",")
                                                         my_file.write("\n")
                                                     with open(output_filename_fasta, 'a') as filtered_fasta_file:
-                                                        if fasta_written==False:
-                                                            #This prevents several Fasta entries for the same record if splice isoforms exist.
-                                                            fasta_written=True
-                                                            fasta_record=str(">"+str(record.id)+"\n"+str(record.seq)+"\n")
-                                                            filtered_fasta_file.write(fasta_record)
+                                                        if fasta_written == False:
+                                                            # This prevents several Fasta entries for the same record if splice isoforms exist.
+                                                            fasta_written = True
+                                                            fasta_record = str(
+                                                                ">" + str(record.id) + "\n" + str(record.seq) + "\n")
+                                                            filtered_fasta_file.write(
+                                                                fasta_record)
 
                         else:
                             length_exclusion_info = str(
@@ -386,7 +494,8 @@ print("Total:", number_of_records_single)
 print("Records single pass length within range:", length_correct_count)
 print("Records single pass length within range not splice isoforms:",
       splice_isoform_count)
-print("Records single pass length within range not splice isoforms no signal sequence:", no_signal_sequence_count)
+print("Records single pass length within range not splice isoforms no signal sequence:",
+      no_signal_sequence_count)
 print("Records single pass length within range not splice isoforms no signal sequence N terminal cytoplasmic:", n_terminal_count)
 print("Records single pass length within range not splice isoforms no signal sequence N terminal cytoplasmic tmh near c terminal:",
       c_terminal_near_end_count)
@@ -401,62 +510,3 @@ for item in length_excluded_tmds:
         my_file.write(item)
         my_file.write("\n")
 my_file.closed
-
-
-
-'''
-### Now we generate the various biochemical values  based on the csv ###
-
-# These are the four perl scripts containing Jim Warwickers windowed
-# hydrophobicity scripts.
-
-output_hydrophobicity_filename = "%s_%s_hydrophobicity.csv" % (
-    scale, output_filename)
-single = []
-
-results = []
-
-with open(output_filename) as csv_inputfile:
-    for line in csv_inputfile:
-        results.append(line.strip().split(','))
-
-for entry in results:
-    if entry == results[0]:
-        pass
-    else:
-        # For reference this is the tmh record output
-        # tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
-        # full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank]
-        name = entry[0]
-        id = entry[1]
-        tmh_start_location = entry[2]
-        tmh_end_location = entry[3]
-        tmh_length = entry[4]
-        sequence = entry[5]
-        tmh_sequence = entry[6]
-        n_flank_sequence = entry[7]
-        c_flank_sequence = entry[8]
-        correction_number = 0
-
-        window_length=5
-        for sequence_position, residue in enumerate(tmh_sequence):
-            if sequence_position-(window_length-1)/2<1:
-                reidues_below=sequence_position
-            else:
-                reidues_below=window_length-1/2
-
-            if sequence_position-(window_length-1)/2>tmh_length:
-                residues_above=tmh_length-sequence_position
-            else:
-                reidues_above=window_length-1/2
-
-            sequence_slice=tmh_sequence[sequence_position-reidues_below:sequence_position+residues_above]
-            analysed_seq_slice = ProteinAnalysis(sequence_slice)
-            analysed_seq_slice.protein_scale(window_length,1)
-
-        with open(output_hydrophobicity_filename, 'a') as my_file:
-            for i in output_line:
-                my_file.write(str(i))
-                my_file.write(",")
-            my_file.write("\n")
-'''

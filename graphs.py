@@ -14,12 +14,13 @@ header = ">Token_header"
 list_of_files = sys.argv[1:]
 print(list_of_files)
 
+#You may need to add colours if you have many datasets to compare.
 color_list=[
-            ("#840000"),
-            ("#6b8ba4"),
-            ("#fac205"),
-            ("#658b38"),
-            ("#caa0ff"),
+            ("#dde8b9"),
+            ("#bfacc8"),
+            ("#ffadc6"),
+            ("#188fa7"),
+            ("#7d70ba"),
             ]
 
 # list_of_scales = ["hessa.pl", "ww.pl",
@@ -137,8 +138,8 @@ for scale in list_of_scales:
                 for n, item in enumerate(hydrophobicity):
                     positions_for_line.append(n-halfway_value_for_alignment-1) #Base 0 counting
 
-                plt.plot(positions_for_line, hydrophobicity, linestyle='', marker='.',
-                         linewidth=0.5, color = color_list[file_number], alpha=(1/len(results)*len(results)/10))
+                #plt.plot(positions_for_line, hydrophobicity, linestyle='', marker='.',
+                #         linewidth=0.5, color = color_list[file_number], alpha=(1/len(results)*len(results)/10))
 
                 for position, hydrophobicity_value in enumerate(hydrophobicity):
                     #if str(hydrophobicity_value) != str("nan"):
@@ -158,7 +159,7 @@ for scale in list_of_scales:
         positions_for_line=[]
         for n, item in enumerate(line):
             positions_for_line.append(n-halfway_value_for_alignment-1)#base 0 counting
-        plt.plot(positions_for_line, line, linestyle='-', marker='x',
+        plt.plot(positions_for_line, line, linestyle='-', marker='',
             linewidth=1, color = color_list[line_number], alpha=1)
 
     #for file_number, dataset in enumerate(list_of_all_hydrophobicity_vectors):
@@ -175,13 +176,11 @@ for scale in list_of_scales:
     #                  bw_method='silverman')
     #    for pc in violin_parts['bodies']:
     #        pc.set_color("black")
+    for index, number in enumerate(positions_for_line):
+        if number == 0:
+            central_index=index
 
-
-
-
-
-
-    plt.xlim([-15, 15])
-    plt.ylabel('hydrophobicity')
-    plt.xlabel('position')
+    plt.xlim([positions_for_line[central_index-15], positions_for_line[central_index+15]])
+    plt.ylabel('Kyte & Doolittle hydrophobicity')
+    plt.xlabel('Sequence position')
     plt.show()
