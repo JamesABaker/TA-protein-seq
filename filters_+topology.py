@@ -10,48 +10,28 @@ def hydrophobicity_calculation(sequence):
     '''
     Calculates the hydrophobicity of a string of amino acids"
     '''
-    sequence = sequence.split()
+    sequence = list(sequence)
     hydrophobicitiy_conversion = {
-        'A'
-        1.8,
-        'C'
-        2.5,
-        'D'
-        - 3.5,
-        'E'
-        - 3.5,
-        'F'
-        2.8,
-        'G'
-        - 0.4,
-        'H'
-        - 3.2,
-        'I'
-        4.5,
-        'K'
-        - 3.9,
-        'L'
-        3.8,
-        'M'
-        1.9,
-        'N'
-        - 3.5,
-        'P'
-        - 1.6,
-        'Q'
-        - 3.5,
-        'R'
-        - 4.5,
-        'S'
-        - 0.8,
-        'T'
-        - 0.7,
-        'V'
-        4.2,
-        'W'
-        - 0.9,
-        'Y'
-        - 1.3,
+        'A' : 1.8,
+        'C' : 2.5,
+        'D' : - 3.5,
+        'E' : - 3.5,
+        'F' : 2.8,
+        'G' : - 0.4,
+        'H' : - 3.2,
+        'I' : 4.5,
+        'K' : - 3.9,
+        'L' : 3.8,
+        'M' : 1.9,
+        'N' : - 3.5,
+        'P' : - 1.6,
+        'Q' : - 3.5,
+        'R' : - 4.5,
+        'S' : - 0.8,
+        'T' : - 0.7,
+        'V' : 4.2,
+        'W' : - 0.9,
+        'Y' : - 1.3,
     }
     residue_hydrophobicities = []
     for residue in sequence:
@@ -64,48 +44,28 @@ def disorder_calculation(sequence):
     '''
     Calculates the disorder of a string of amino acids"
     '''
-    sequence = sequence.split()
+    sequence = list(sequence)
     disorder_conversion = {
-        'A'
-        - 0.26154,
-        'C'
-        - 0.01515,
-        'D'
-        0.22763,
-        'E'
-        - 0.20469,
-        'F'
-        - 0.22557,
-        'G'
-        0.43323,
-        'H'
-        - 0.00122,
-        'I'
-        - 0.42224,
-        'K'
-        - 0.10009,
-        'L'
-        - 0.33793,
-        'M'
-        - 0.22590,
-        'N'
-        0.22989,
-        'P'
-        0.55232,
-        'Q'
-        - 0.18768,
-        'R'
-        - 0.17659,
-        'S'
-        0.14288,
-        'T'
-        0.00888,
-        'V'
-        - 0.38618,
-        'W'
-        - 0.24338,
-        'Y'
-        - 0.20751,
+        'A' :  - 0.26154,
+        'C' :  - 0.01515,
+        'D' :  0.22763,
+        'E' :  - 0.20469,
+        'F' :  - 0.22557,
+        'G' :  0.43323,
+        'H' :  - 0.00122,
+        'I' :  - 0.42224,
+        'K' :  - 0.10009,
+        'L' :  - 0.33793,
+        'M' :  - 0.22590,
+        'N' :  0.22989,
+        'P' : 0.55232,
+        'Q' : - 0.18768,
+        'R' : - 0.17659,
+        'S' : 0.14288,
+        'T' : 0.00888,
+        'V' : - 0.38618,
+        'W' : - 0.24338,
+        'Y' : - 0.20751,
     }
     residue_disorder = []
     for residue in sequence:
@@ -415,8 +375,7 @@ for record in SeqIO.parse(input_file, input_format):
                 if "Inside" in n_terminal_start or "Outside" in n_terminal_start:
                     # This is the information that will be written for the record.
                     # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
-                    tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
-                                  full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_flank))]
+    tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1, full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
 
                     number_of_records = number_of_records + 1
 
