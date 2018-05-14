@@ -30,6 +30,4 @@ human.dat
 
 *.txt
 
-*.csv
-
 !/S1_kalbfleisch_list_uniprot_excluding_predicted_proteins.txt

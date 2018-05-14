@@ -134,9 +134,9 @@ for scale in list_of_scales:
                 hydrophobicity = np.array(hydrophobicity_converted)
 
                 #Now we calculate the positions to plot on the X axis in relation to these vectors.
-                positions_for_line=[]
-                for n, item in enumerate(hydrophobicity):
-                    positions_for_line.append(n-halfway_value_for_alignment-1) #Base 0 counting
+                #positions_for_line=[]
+                #for n, item in enumerate(hydrophobicity):
+                #    positions_for_line.append(n-halfway_value_for_alignment-1) #Base 0 counting
 
                 #plt.plot(positions_for_line, hydrophobicity, linestyle='', marker='.',
                 #         linewidth=0.5, color = color_list[file_number], alpha=(1/len(results)*len(results)/10))
