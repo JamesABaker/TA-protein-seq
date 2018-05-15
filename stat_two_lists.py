@@ -87,9 +87,9 @@ print("Mean Values And Error")
 for n, dataset in enumerate(list_of_files):
     print(list_of_files[n])
     print("Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation")
-    print("Hydrophobicity,", np.mean(hydrophobicity_sets[n]),",",np.mean(flanks_hydrophobicity_sets[n]), "," np.std(hydrophobicity_sets[n]),",",np.std(flanks_hydrophobicity_sets[n]))
-    print("Disorder,", np.mean(disorder_sets[n]), ",", np.mean(flanks_disorder_sets[n]) "," np.std(disorder_sets[n]),",",np.std(flanks_disorder_sets[n]))
-    print("Sequence Entropy,", np.mean(entropy_sets[n]), ",", np.mean(flanks_entropy_sets[n]) "," np.std(entropy_sets[n]),",",np.std(flanks_entropy_sets[n]))
+    print("Hydrophobicity,", np.mean(hydrophobicity_sets[n]),",",np.mean(flanks_hydrophobicity_sets[n]), ",", np.std(hydrophobicity_sets[n]),",",np.std(flanks_hydrophobicity_sets[n]))
+    print("Disorder,", np.mean(disorder_sets[n]), ",", np.mean(flanks_disorder_sets[n]), ",", np.std(disorder_sets[n]),",",np.std(flanks_disorder_sets[n]))
+    print("Sequence Entropy,", np.mean(entropy_sets[n]), ",", np.mean(flanks_entropy_sets[n]), ",", np.std(entropy_sets[n]),",",np.std(flanks_entropy_sets[n]))
 
 
 
