@@ -4,6 +4,7 @@ from Bio import SeqIO
 import numpy as np
 import subprocess
 import re
+import math
 
 
 def hydrophobicity_calculation(sequence):

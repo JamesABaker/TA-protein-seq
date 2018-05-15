@@ -29,9 +29,13 @@ print("Factor,Test, Test-statistic, P value, Bahadur slope")
 
 list_of_files = sys.argv[1:]
 disorder_sets = []
-hydrophobicity_sets = []
 flanks_disorder_sets = []
+
+hydrophobicity_sets = []
 flanks_hydrophobicity_sets = []
+
+entropy_sets = []
+flanks_entropy_sets = []
 
 for file_number, file in enumerate(list_of_files):
       # This generates an empty list for each potential possition. Values of hydrophobicity will be added to this later and will contribute to the average.
@@ -40,6 +44,9 @@ for file_number, file in enumerate(list_of_files):
     hydrophobicity_set = []
     flanks_disorder_set = []
     flanks_hydrophobicity_set = []
+    entropy_set = []
+    flanks_entropy_set = []
+
     with open(file) as inputfile:
         for line in inputfile:
             results.append(line.strip().split(','))
@@ -60,28 +67,52 @@ for file_number, file in enumerate(list_of_files):
             tmh_flank_hydrophobicity = float(entry[10])
             tmh_disorder = float(entry[11])
             tmh_flank_disorder = float(entry[12])
+            tmh_entropy = float(entry[13])
+            tmh_flank_entropy = float(entry[14])
 
-            disorder_set.append(tmh_disorder)
             hydrophobicity_set.append(tmh_hydrophobicity)
-            flanks_disorder_set.append(tmh_flank_disorder)
             flanks_hydrophobicity_set.append(tmh_flank_hydrophobicity)
-    disorder_sets.append(disorder_set)
+            disorder_set.append(tmh_disorder)
+            flanks_disorder_set.append(tmh_flank_disorder)
+            entropy_set.append(tmh_hydrophobicity)
+            flanks_entropy_set.append(tmh_flank_disorder)
     hydrophobicity_sets.append(hydrophobicity_set)
-    flanks_disorder_sets.append(flanks_disorder_set)
     flanks_hydrophobicity_sets.append(flanks_hydrophobicity_set)
+    disorder_sets.append(disorder_set)
+    flanks_disorder_sets.append(flanks_disorder_set)
+    entropy_sets.append(entropy_set)
+    flanks_entropy_sets.append(flanks_entropy_set)
+
+print("Mean Values And Error")
+for n, dataset in enumerate(list_of_files):
+    print(list_of_files[n])
+    print("Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation")
+    print("Hydrophobicity,", np.mean(hydrophobicity_sets[n]),",",np.mean(flanks_hydrophobicity_sets[n]), "," np.std(hydrophobicity_sets[n]),",",np.std(flanks_hydrophobicity_sets[n]))
+    print("Disorder,", np.mean(disorder_sets[n]), ",", np.mean(flanks_disorder_sets[n]) "," np.std(disorder_sets[n]),",",np.std(flanks_disorder_sets[n]))
+    print("Sequence Entropy,", np.mean(entropy_sets[n]), ",", np.mean(flanks_entropy_sets[n]) "," np.std(entropy_sets[n]),",",np.std(flanks_entropy_sets[n]))
+
+
+
+print("Statistical table")
+#print("\n\nHydrophobicity of TMH\n")
+stats(str("Hydrophobicity of TMH"),
+      hydrophobicity_sets[0], hydrophobicity_sets[1])
+
+#print("\n\nHydrophobicity of TMH and flanks\n")
+stats(str("Hydrophobicity of TMH and flanks"),
+      flanks_hydrophobicity_sets[0], flanks_hydrophobicity_sets[1])
 
 
 #print("\n\nDisorder of TMH\n")
 stats(str("Disorder of TMH"), disorder_sets[0], disorder_sets[1])
 
-#print("\n\nHydrophobicity of TMH\n")
-stats(str("Hydrophobicity of TMH"),
-      hydrophobicity_sets[0], hydrophobicity_sets[1])
-
 #print("\n\nDisorder of TMH and flanks\n")
 stats(str("Disorder of TMH and flanks"),
       flanks_disorder_sets[0], flanks_disorder_sets[1])
 
-#print("\n\nHydrophobicity of TMH and flanks\n")
-stats(str("Hydrophobicity of TMH and flanks"),
-      flanks_hydrophobicity_sets[0], flanks_hydrophobicity_sets[1])
+#print("\n\nentropy of TMH\n")
+stats(str("Sequence Entropy of TMH"), entropy_sets[0], entropy_sets[1])
+
+#print("\n\nentropy of TMH and flanks\n")
+stats(str("Sequence Entropy of TMH and flanks"),
+      flanks_entropy_sets[0], flanks_entropy_sets[1])

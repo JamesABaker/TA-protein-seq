@@ -4,6 +4,7 @@ from Bio import SeqIO
 import numpy as np
 import subprocess
 import re
+import math
 
 
 def hydrophobicity_calculation(sequence):
@@ -76,7 +77,7 @@ def disorder_calculation(sequence):
         residue_disorder.append(disorder_conversion[str(residue)])
     return np.mean(residue_disorder)
 
-    
+
 def entropy(string):
     '''
     Use the following code for a custom command.
