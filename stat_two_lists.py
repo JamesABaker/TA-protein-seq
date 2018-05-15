@@ -21,6 +21,8 @@ def stats(factor, list1, list2):
         list1, list2)[1], ",", bahadur(list1, list2, scipy.stats.ks_2samp(list1, list2)[1]))
     print(factor, ", Student's T-test, ", scipy.stats.ttest_ind(list1, list2)[0], ",", scipy.stats.ttest_ind(
         list1, list2)[1], ",", bahadur(list1, list2, scipy.stats.ttest_ind(list1, list2)[1]))
+    # print(factor, ", Chi Squre test, ", scipy.stats.chisquare(list1, list2)[0], ",", scipy.stats.chisquare(
+    #    list1, list2)[1], ",", bahadur(list1, list2, scipy.stats.chisquare(list1, list2)[1]))
 
 
 print("Factor,Test, Test-statistic, P value, Bahadur slope")

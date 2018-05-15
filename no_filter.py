@@ -76,6 +76,19 @@ def disorder_calculation(sequence):
         residue_disorder.append(disorder_conversion[str(residue)])
     return np.mean(residue_disorder)
 
+    
+def entropy(string):
+    '''
+    Use the following code for a custom command.
+    via "Shannon's entropy equation is the standard method of calculation.
+    Here is a simple implementation in Python, shamelessly copied from the Revelation codebase, and thus GPL licensed:"
+    '''
+    # get probability of chars in string
+    prob = [float(string.count(c)) / len(string)
+            for c in dict.fromkeys(list(string))]
+    # calculate the entropy
+    entropy = - sum([p * math.log(p) / math.log(2.0) for p in prob])
+    return entropy
 
 input_file = str(sys.argv[1])
 flank_length = 5
@@ -97,7 +110,7 @@ output_filename = input_file.replace(".txt", ".csv")
 
 # The header row in the file.
 with open(output_filename, 'w') as my_file:
-    my_file.write("Name and description, ID, tmh start location, tmh end location, tmh length, full protein sequence, tmh sequence, N flank sequence, C flank sequence, Hydrophobicity of TMH, Hydrophobicity of TMH and flanks, Disorder of TMH, Disorder of TMH and flanks,  \n")
+    my_file.write("Name and description, ID, tmh start location, tmh end location, tmh length, full protein sequence, tmh sequence, N flank sequence, C flank sequence, Hydrophobicity of TMH, Hydrophobicity of TMH and flanks, Disorder of TMH, Disorder of TMH and flanks, Entropy of TMH, Entropy of TMH and flanks \n")
 my_file.closed
 
 # We need to check against nearby features to prevent overlapping
@@ -141,8 +154,8 @@ for record in SeqIO.parse(input_file, input_format):
 
                 # This is the information that will be written for the record.
                 # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
-                tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1,
-                              full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
+                tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1, full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(
+                    c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), entropy(tmh_sequence), entropy(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
                 with open(output_filename, 'a') as my_file:
                     for i in tmh_record:
                         my_file.write(str(i))
