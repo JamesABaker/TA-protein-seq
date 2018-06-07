@@ -100,6 +100,7 @@ input_format = "swiss"
 # For future modification, this can be used to look for any annotation in
 # the file.
 feature_type = "TRANSMEM"
+signal_feature = "SIGNAL"
 # Simply the output name, can be anything as it is written in binary (not
 # file-type specific language).
 output_filename_fasta = str(str(input_file) + "-TMD-filtered.fasta")
@@ -123,6 +124,9 @@ my_file.closed
 unknown = 0
 reliable_flank_length = flank_length
 
+tail_errors=0
+signal_errors = 0
+multipass = 0
 
 # We iterate through each record, parsed by biopython.
 for record in SeqIO.parse(input_file, input_format):
@@ -157,14 +161,46 @@ for record in SeqIO.parse(input_file, input_format):
                 # +/-1s are used since slices originally call how many steps to iterate rather than the sequence postion. This matches the Uniprot sequence numbering
                 tmh_record = [name_of_record, id_of_record, tmh_start + 1, tmh_stop, abs(tmh_start - tmh_stop) - 1, full_sequence, tmh_sequence, n_terminal_flank, c_terminal_flank, hydrophobicity_calculation(tmh_sequence), hydrophobicity_calculation(str(
                     c_terminal_flank + tmh_sequence + n_terminal_flank)), disorder_calculation(tmh_sequence), disorder_calculation(str(c_terminal_flank + tmh_sequence + n_terminal_flank)), entropy(tmh_sequence), entropy(str(c_terminal_flank + tmh_sequence + n_terminal_flank))]
-                with open(output_filename, 'a') as my_file:
-                    for i in tmh_record:
-                        my_file.write(str(i))
-                        my_file.write(",")
-                    my_file.write("\n")
-                with open(output_filename_fasta, 'a') as filtered_fasta_file:
-                    # This prevents several Fasta entries for the same record if splice isoforms exist.
-                    fasta_written = True
-                    fasta_record = str(
-                        ">" + str(record.id) + "\n" + str(record.seq) + "\n")
-                    filtered_fasta_file.write(fasta_record)
+
+                #Some filters need to be applied to check for signal anchors and erroneously long tail anchors.
+                tail_length=abs(tmh_stop-len(full_sequence))
+
+                if tail_length <= 25:
+                    signal = False
+                    singlepass = False
+                    tmd_count = 0
+
+                    for i, f in enumerate(record.features):
+                        if f.type == feature_type:
+                            tmd_count = tmd_count + 1
+                    if tmd_count == 1:
+
+                        for i, f in enumerate(record.features):
+                            if f.type == signal_feature:
+                                signal = True
+                        if signal == False:
+                            with open(output_filename, 'a') as my_file:
+                                for i in tmh_record:
+                                    my_file.write(str(i))
+                                    my_file.write(",")
+                                my_file.write("\n")
+                            with open(output_filename_fasta, 'a') as filtered_fasta_file:
+                                # This prevents several Fasta entries for the same record if splice isoforms exist.
+                                fasta_written = True
+                                fasta_record = str(
+                                    ">" + str(record.id) + "\n" + str(record.seq) + "\n")
+                                filtered_fasta_file.write(fasta_record)
+                        elif signal == True:
+                            signal_errors = signal_errors +1
+                            print("Signal error in", record.id, ". Record ", record.id, "contained a signal sequence.")
+                    elif tmd_count > 1:
+                        multipass = multipass + 1
+                        print(tmd_count, " TMHs in Record ", record.id)
+
+                elif tail_length > 25:
+                    tail_errors = tail_errors +1
+                    print("Tail error in", record.id, ". Tail length should be 25 or lower. ", record.id, "had a tail-length of ", tail_length, ".")
+
+print(tail_errors, " proteins exceeded the tail length restriction and were excluded from the .csv and .fasta output..")
+print(signal_errors, " proteins contained a signal sequence and were excluded from the .csv and .fasta output.")
+print(multipass, " proteins contained a multiple TMHs and were excluded from the .csv and .fasta output.")
