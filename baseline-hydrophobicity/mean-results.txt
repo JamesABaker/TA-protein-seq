@@ -1,0 +1,11 @@
+Factor,Test, Test-statistic, P value, Bahadur slope
+Mean Values And Error
+UniER_5_flanklength_flankclashTrue.csv
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.1927005419 , 1.21561064637 , 0.489410239795 , 0.450312247078
+UniGolgi_5_flanklength_flankclashTrue.csv
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.13492903016 , 1.07869910291 , 0.436250522471 , 0.424630713286
+UniPM_5_flanklength_flankclashTrue.csv
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.59627330009 , 1.53343684638 , 0.458475310639 , 0.431449251839
