@@ -2,8 +2,9 @@ import sys
 import re
 import numpy as np
 
+
 def maximum(array):
-    maximum =0
+    maximum = 0
     for i in array:
         if i > maximum:
             maximum = i
@@ -13,9 +14,11 @@ def maximum(array):
 list_of_files = sys.argv[1:]
 
 for file_number, file in enumerate(list_of_files):
-      # This generates an empty list for each potential possition. Values of hydrophobicity will be added to this later and will contribute to the average.
+      # This generates an empty list for each potential possition. Values of
+      # hydrophobicity will be added to this later and will contribute to the
+      # average.
     tail_length_list = []
-    results =[]
+    results = []
     with open(file) as inputfile:
         for line in inputfile:
             results.append(line.strip().split(','))
@@ -39,11 +42,12 @@ for file_number, file in enumerate(list_of_files):
             tmh_entropy = float(entry[13])
             tmh_flank_entropy = float(entry[14])
 
-            tail_length=abs(tmh_end_location-len(sequence))
+            tail_length = abs(tmh_end_location - len(sequence))
 
             tail_length_list.append(tail_length)
 
             if tail_length > 50:
                 print(id, tail_length)
 
-    print("Mean:", np.mean(tail_length_list), ", S.D:", np.std(tail_length_list), ", Max:", maximum(tail_length_list))
+    print("Mean:", np.mean(tail_length_list), ", S.D:", np.std(
+        tail_length_list), ", Max:", maximum(tail_length_list))

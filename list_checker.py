@@ -2,6 +2,7 @@ import sys
 
 list_of_files = sys.argv[1:]
 
+
 def listify(file):
     with open(file) as f:
         lines = f.read().splitlines()

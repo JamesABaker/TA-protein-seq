@@ -22,7 +22,8 @@ def stats(factor, list1, list2):
     print(factor, ", Student's T-test, ", scipy.stats.ttest_ind(list1, list2)[0], ",", scipy.stats.ttest_ind(
         list1, list2)[1], ",", bahadur(list1, list2, scipy.stats.ttest_ind(list1, list2)[1]))
     # print(factor, ", Chi Squre test, ", scipy.stats.chisquare(list1, list2)[0], ",", scipy.stats.chisquare(
-    #    list1, list2)[1], ",", bahadur(list1, list2, scipy.stats.chisquare(list1, list2)[1]))
+    # list1, list2)[1], ",", bahadur(list1, list2,
+    # scipy.stats.chisquare(list1, list2)[1]))
 
 
 print("Factor,Test, Test-statistic, P value, Bahadur slope")
@@ -38,7 +39,9 @@ entropy_sets = []
 flanks_entropy_sets = []
 
 for file_number, file in enumerate(list_of_files):
-      # This generates an empty list for each potential possition. Values of hydrophobicity will be added to this later and will contribute to the average.
+      # This generates an empty list for each potential possition. Values of
+      # hydrophobicity will be added to this later and will contribute to the
+      # average.
     results = []
     disorder_set = []
     hydrophobicity_set = []
@@ -87,10 +90,12 @@ print("Mean Values And Error")
 for n, dataset in enumerate(list_of_files):
     print(list_of_files[n])
     print("Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation")
-    print("Hydrophobicity,", np.mean(hydrophobicity_sets[n]),",",np.mean(flanks_hydrophobicity_sets[n]), ",", np.std(hydrophobicity_sets[n]),",",np.std(flanks_hydrophobicity_sets[n]))
-    print("Disorder,", np.mean(disorder_sets[n]), ",", np.mean(flanks_disorder_sets[n]), ",", np.std(disorder_sets[n]),",",np.std(flanks_disorder_sets[n]))
-    print("Sequence Entropy,", np.mean(entropy_sets[n]), ",", np.mean(flanks_entropy_sets[n]), ",", np.std(entropy_sets[n]),",",np.std(flanks_entropy_sets[n]))
-
+    print("Hydrophobicity,", np.mean(hydrophobicity_sets[n]), ",", np.mean(flanks_hydrophobicity_sets[
+          n]), ",", np.std(hydrophobicity_sets[n]), ",", np.std(flanks_hydrophobicity_sets[n]))
+    print("Disorder,", np.mean(disorder_sets[n]), ",", np.mean(flanks_disorder_sets[
+          n]), ",", np.std(disorder_sets[n]), ",", np.std(flanks_disorder_sets[n]))
+    print("Sequence Entropy,", np.mean(entropy_sets[n]), ",", np.mean(flanks_entropy_sets[
+          n]), ",", np.std(entropy_sets[n]), ",", np.std(flanks_entropy_sets[n]))
 
 
 print("Statistical table")
@@ -115,4 +120,4 @@ stats(str("Sequence Entropy of TMH"), entropy_sets[0], entropy_sets[1])
 
 #print("\n\nentropy of TMH and flanks\n")
 stats(str("Sequence Entropy of TMH and flanks"),
-flanks_entropy_sets[0], flanks_entropy_sets[1])
+      flanks_entropy_sets[0], flanks_entropy_sets[1])

@@ -433,7 +433,9 @@ for record in SeqIO.parse(input_file, input_format):
                                                 # Is the C-terminal within 25 residues
                                                 # of the final residue?
                                                 if abs(int(tmh_stop) - (len(str(record.seq)))) <= 25:
-                                                    # if abs(tmh_stop - len(record.seq.end)) < 26:
+                                                    # if abs(tmh_stop -
+                                                    # len(record.seq.end)) <
+                                                    # 26:
                                                     c_terminal_near_end_count = c_terminal_near_end_count + 1
                                                     with open(output_filename, 'a') as my_file:
                                                         for i in tmh_record:
@@ -443,7 +445,12 @@ for record in SeqIO.parse(input_file, input_format):
                                                         my_file.write("\n")
                                                     with open(output_filename_fasta, 'a') as filtered_fasta_file:
                                                         if fasta_written == False:
-                                                            # This prevents several Fasta entries for the same record if splice isoforms exist.
+                                                            # This prevents
+                                                            # several Fasta
+                                                            # entries for the
+                                                            # same record if
+                                                            # splice isoforms
+                                                            # exist.
                                                             fasta_written = True
                                                             fasta_record = str(
                                                                 ">" + str(record.id) + "\n" + str(record.seq) + "\n")
