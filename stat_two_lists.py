@@ -115,4 +115,4 @@ stats(str("Sequence Entropy of TMH"), entropy_sets[0], entropy_sets[1])
 
 #print("\n\nentropy of TMH and flanks\n")
 stats(str("Sequence Entropy of TMH and flanks"),
-      flanks_entropy_sets[0], flanks_entropy_sets[1])
+flanks_entropy_sets[0], flanks_entropy_sets[1])

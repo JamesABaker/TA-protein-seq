@@ -1,3 +1,4 @@
+#View for cytochrome
 set_view (\
     -0.495726764,   -0.528406680,   -0.689206600,\
      0.832032502,   -0.061568666,   -0.551255822,\
@@ -7,24 +8,11 @@ set_view (\
   -434.589385986,  858.289916992,  -20.000000000 )
 
 
-#Run 1 consurf
-
-Structure
-   PDB File: cytb5-clean.pdb
-   Chain identifier: A
-Alignment
-   Multiple Sequence Alignment was built using MAFFT
-   The Homologues were collected from UNIREF90
-   Homolog search algorithm: HMMER
-   HMMER E-value: 0.0001
-   No. of HMMER Iterations: 1
-
-   Maximal %ID Between Sequences : 95
-   Minimal %ID For Homologs : 35
-   150 sequences that sample the list of homologues to the query.
-
-Phylogenetic Tree
-   Neighbor Joining with ML distance
-Conservation Scores
-   Method of Calculation: Bayesian
-   Model of substitution for proteins: Best fit
+# view for PTP1b
+set_view (\
+     0.769413173,    0.569916427,   -0.288408577,\
+     0.546814203,   -0.354358822,    0.758557260,\
+     0.330113560,   -0.741359711,   -0.584285498,\
+    -0.000000387,    0.000000417, -129.777282715,\
+    25.753749847,    6.729728699,   25.526292801,\
+    23.031021118,  147.870346069,  -20.000000000 )
