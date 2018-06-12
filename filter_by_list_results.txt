@@ -1,0 +1,54 @@
+Interaction/hsc70-A+B-interactors-uniprot-11-6-2018.txt
+0  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, nan , nan , nan , nan
+Disorder, nan , nan , nan , nan
+Sequence Entropy, nan , nan , nan , nan
+
+
+Interaction/hsp40-A+B-interactors-uniprot-11-6-2018.txt
+0  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, nan , nan , nan , nan
+Disorder, nan , nan , nan , nan
+Sequence Entropy, nan , nan , nan , nan
+
+
+Interaction/snd1-A+B-interactors-uniprot-11-6-2018.txt
+15  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.60001683487 , 1.5818596594 , 0.442150454254 , 0.32888764911
+Disorder, -0.256241582667 , -0.221412808933 , 0.0310892811871 , 0.0237438588907
+Sequence Entropy, 2.75545397193 , 3.2201105932 , 0.194461934785 , 0.152178229971
+
+
+Interaction/sgt2-A+B-interactors-uniprot-11-6-2018.txt
+14  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.47440476179 , 1.5089985945 , 0.335444350012 , 0.413135622594
+Disorder, -0.2313134325 , -0.189209474571 , 0.0469195757906 , 0.073452318173
+Sequence Entropy, 2.65452523557 , 3.12128528921 , 0.31984437053 , 0.247838337967
+
+
+Interaction/sgta-A+B-interactors-uniprot-11-6-2018.txt
+5  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.2722077924 , 1.1876532258 , 0.323160727011 , 0.328005693026
+Disorder, -0.1651594502 , -0.1134051498 , 0.00358257188786 , 0.0699225577953
+Sequence Entropy, 2.766369964 , 3.2177316802 , 0.579552085659 , 0.478857247773
+
+
+Interaction/trc40-A+B-interactors-uniprot-11-6-2018.txt
+7  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.76714285714 , 1.82276403186 , 0.537795880376 , 0.602590735141
+Disorder, -0.263811306286 , -0.215347881 , 0.0575280070727 , 0.0430367167742
+Sequence Entropy, 2.73078550014 , 3.25738348829 , 0.213311848198 , 0.146506274132
+
+
+Interaction/get3-A+B-interactors-uniprot-11-6-2018.txt
+22  records captured.
+Factor, TMH average, TMH and flanks average, TMH standard deviation, TMH and flanks standard deviation
+Hydrophobicity, 2.36230837782 , 1.47891737009 , 0.43533501507 , 0.486185616398
+Disorder, -0.227354928636 , -0.199741577 , 0.0539846325404 , 0.0505750394127
+Sequence Entropy, 2.81169254327 , 3.25589532614 , 0.262263686447 , 0.200053318715
