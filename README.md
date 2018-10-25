@@ -31,7 +31,149 @@ Then:
 
  `YOURFILE` can be .txt or .dat downloaded from Uniprot as a text file.
 
-## Filter Method
+The file structure is outlined below:
+
+        ../TA-protein-seq
+        ├── Interaction
+        │   ├── get3-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── get3-BIOGRID-GENE-31962-3.4.161.tab2-11-6-2018.txt
+        │   ├── get3-interactors-A+B-Entrez.txt
+        │   ├── hsc70-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── hsc70-BIOGRID-GENE-109544-3.4.161.tab2-11-6-2018.txt
+        │   ├── hsc70-interactor-A+B-Entrez.txt
+        │   ├── hsp-interactors-A+B-Entrez.txt
+        │   ├── hsp40-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── hsp40-BIOGRID-GENE-119699-3.4.161.tab2-11-6-2018.txt
+        │   ├── interaction\ command.txt
+        │   ├── interaction-chaperone-profiles-log.txt
+        │   ├── sgt2-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── sgt2-BIOGRID-GENE-34410-3.4.161.tab2-11-6-2018.txt
+        │   ├── sgt2-interactors-A+B-Entrez.txt
+        │   ├── sgta-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── sgta-BIOGRID-GENE-112347-3.4.161.tab2-11-6-2018.txt
+        │   ├── sgta-interactors-A+B-Entrez.txt
+        │   ├── sl-9908-7-6-2018.csv
+        │   ├── snd1-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── snd1-BIOGRID-GENE-32240-3.4.161.tab2-11-6-2018.txt
+        │   ├── snd1-interactors-A+B-Entrez.txt
+        │   ├── trc40-A+B-interactors-uniprot-11-6-2018.txt
+        │   ├── trc40-BIOGRID-GENE-106931-3.4.161.tab2-11-6-2018.txt
+        │   └── trc40-interactors-A+B-Entrez.txt
+        ├── SL-9908_24_4_2018
+        │   ├── Unfiltered
+        │   │   ├── SL-9908_24-4-2018.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_er.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_golgi.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_human-and-mouse.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_human.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_mito.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_mouse.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_plant.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_pm.csv
+        │   │   ├── SL-9908_24_4_2018-after_cdhit_yeast.csv
+        │   │   ├── SL-9908_24_4_2018_afterCDHIT.csv
+        │   │   └── cd-hit
+        │   │       ├── LOG
+        │   │       ├── README
+        │   │       ├── output
+        │   │       ├── output-sorted.clstr
+        │   │       ├── output.clstr
+        │   │       └── output.log
+        │   ├── cd-hit
+        │   │   └── sl-9908-7-6-2018-cd-hit.txt.clstr
+        │   ├── sl-9908-7-6-2018-cd-hit-Mouse.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-er.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-golgi.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-human.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-mammal.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-mito.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-plant.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-pm.csv
+        │   ├── sl-9908-7-6-2018-cd-hit-yeast.csv
+        │   └── sl-9908-7-6-2018-cd-hit.csv
+        ├── TA_filter_flow.pdf
+        ├── TA_filter_flow.png
+        ├── TrEMBL_25_4_2018
+        │   ├── TrEMBL-TRANSMEM_25-4-2018.csv
+        │   ├── TrEMBL-TRANSMEM_25-4-2018_aftercdhit.csv
+        │   └── cd-hit
+        │       ├── LOG
+        │       ├── README
+        │       ├── output
+        │       ├── output-sorted.clstr
+        │       ├── output.clstr
+        │       └── output.log
+        ├── baseline-hydrophobicity
+        │   ├── UniER_5_flanklength_flankclashTrue.csv
+        │   ├── UniGolgi_5_flanklength_flankclashTrue.csv
+        │   ├── UniPM_5_flanklength_flankclashTrue.csv
+        │   ├── mean-results.txt
+        │   └── nni-csv-hydrophobicity.py
+        ├── filter_by_list_results.txt
+        ├── heatmaps
+        │   ├── Figure_1_2_3_4_6(nni-clone).py
+        │   ├── heatmaps\ only.xlsx
+        │   └── heatmaps.log
+        ├── readme.md
+        ├── reference_list.csv
+        ├── scripts
+        │   ├── bio_ID_converter.py
+        │   ├── eisenberg.pl
+        │   ├── filter-by-list.py
+        │   ├── filter_with_topology.py
+        │   ├── graphs.py
+        │   ├── hessa.pl
+        │   ├── hydrophobicity_profile.py
+        │   ├── kd.pl
+        │   ├── list_checker.py
+        │   ├── no_topology_filter.py
+        │   ├── stat_two_lists.py
+        │   ├── tail_lengths.py
+        │   └── txt_to_id_list.py
+        ├── spontaneous_TA_case_study
+        │   ├── Modeller_9375144(1).pdb
+        │   ├── consurf2cytb5.png
+        │   ├── consurf2cytb5180.png
+        │   ├── consurf_new.py
+        │   ├── cytb5-180.png
+        │   ├── cytb5-clean.pdb
+        │   ├── cytb5.pdb
+        │   ├── cytb5.png
+        │   ├── cytb5_clean_pdb_ATOMS_section_With_ConSurf.pdb
+        │   ├── cytb5_clean_pdb_With_Conservation_Scores.pdb
+        │   ├── cytb5electro-180.png
+        │   ├── cytb5hydro-180.png
+        │   ├── cytb5tmhelectro.png
+        │   ├── cytb5tmhhydro.png
+        │   ├── cytochrome\ b5\ figure.pdf
+        │   ├── hydrophobicity.py
+        │   ├── ptp1bhelix.png
+        │   ├── ptp1bhelix180.png
+        │   ├── ptp1bhelixelectro.png
+        │   ├── ptp1bhelixelectro180.png
+        │   ├── ptp1bhelixhydrophobicity.png
+        │   ├── ptp1bhelixhydrophobicity180.png
+        │   ├── ptphelixclean.pdb
+        │   └── view\ for\ cyt\ b5\ pymol.py
+        └── swissprot_24_4_2018
+            ├── SwissProt_24-4-2018_AfterCDHIT.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_er.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_golgi.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_human.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_human_and_mouse.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_mito.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_mouse.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_plants.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_pm.csv
+            ├── SwissProt_24-4-2018_AfterCDHIT_yeast.csv
+            ├── SwissProt_24_4_2018.csv
+            └── cd-hit
+                ├── LOG
+                ├── README
+                ├── output
+                ├── output-sorted.clstr
+                ├── output.clstr
+                └── output.log
 
 
 
