@@ -5,9 +5,19 @@
 This bundle of scripts aims to filter a uniprot text file into a list of potential Tail Anchors. Basically the list filters a uniprot text file to a list of uniprot IDs that are likely tail anchors.
 
 ### Academic abstract originally accepted at FEBS Congress 2015.
-#### A bioinformatic method to identify potential SNARE proteins.
 
-Tail anchored proteins are a topologically distinct class of intracellular proteins defined by their single carboxy-terminal transmembrane domain with a cytosolic facing amino-terminus. Tail anchored proteins are involved in a range of key cellular functions including protein translocation and apoptosis. Additionally, within the tail anchored class of proteins are a set of vesicle fusion proteins called SNARE proteins. There is biomedical interest in SNARE drug delivery mechanisms. SNAREs can fuse liposomes containing various drug payloads into the membrane. This study aims to identify SNARE proteins in eukaryotic proteomes by filtering through large datasets using automatically predicted TrEMBL consensus, and manually annotated SWISS-PROT transmembrane regions. The pipeline generates a list of singlepass proteins with a transmembrane domain close to the C terminal, that are not splice isoforms. A previous study by Kalbfleisch _et al._ published in Traffic 2007 (**8**: _1687-1694_) predicted 411 tail anchor proteins. This study uses more stringent filtering methods, and a larger dataset, to identify 351 novel predicted tail anchored proteins from a comprehensive human dataset. The tools developed herein are openly available for re-application to other datasets. Notably, known SNARE transmembrane helices are highly hydrophobic even compared to other tail anchored transmembrane helices. We compare Kyte and Doolittle hydrophobicity profiles of our filtered human protein list against the profiles of previously known SNARE and tail anchored proteins. This provided a list of potential SNARE proteins in addition to potential spontaneously inserting tail anchored proteins similar to cytochrome b5 which have the least hydrophobic transmembrane helices.
+Initially the project aimed to identify highly hydrophobic SNARE TMHs from a list of TA proteins.
+
+>#### A bioinformatic method to identify potential SNARE proteins.
+>
+>Tail anchored proteins are a topologically distinct class of intracellular proteins defined by their single carboxy-terminal transmembrane domain with a cytosolic facing amino-terminus. Tail anchored proteins are involved in a range of key cellular functions including protein translocation and apoptosis. Additionally, within the tail anchored class of proteins are a set of vesicle fusion proteins called SNARE proteins. There is biomedical interest in SNARE drug delivery mechanisms. SNAREs can fuse liposomes containing various drug payloads into the membrane. This study aims to identify SNARE proteins in eukaryotic proteomes by filtering through large datasets using automatically predicted TrEMBL consensus, and manually annotated SWISS-PROT transmembrane regions. The pipeline generates a list of singlepass proteins with a transmembrane domain close to the C terminal, that are not splice isoforms. A previous study by Kalbfleisch _et al._ published in Traffic 2007 (**8**: _1687-1694_) predicted 411 tail anchor proteins. This study uses more stringent filtering methods, and a larger dataset, to identify 351 novel predicted tail anchored proteins from a comprehensive human dataset. The tools developed herein are openly available for re-application to other datasets. Notably, known SNARE transmembrane helices are highly hydrophobic even compared to other tail anchored transmembrane helices. We compare Kyte and Doolittle hydrophobicity profiles of our filtered human protein list against the profiles of previously known SNARE and tail anchored proteins. This provided a list of potential SNARE proteins in addition to potential spontaneously inserting tail anchored proteins similar to cytochrome b5 which have the least hydrophobic transmembrane helices.
+
+Since then the project has been developed to investigate subtle, but biologically distinctive, compositional differences between various groups of TA TMPs. The aim of these scripts is to generate a list of TA proteins from various sources and analyse sequence distributions of the residues.
+There are a series of filters to deduce tail anchored proteins.
+Then, the lists can be stratified into distinct biological groups, for example different species or different sub cellular organelles.
+
+<img src="TA_filter_flow.png" width="800">
+
 
 ## Running the Prediction
 
@@ -23,20 +33,11 @@ Then:
 
 ## Filter Method
 
-There are a series of filters to deduce tail anchored proteins.
 
-<img src="TA_filter_flow.png" width="400">
-
-1. The script filters proteins by those with `TRANSMEM` regions. `TRANSMEM` annotation includes experimentally confirmed TMDs and predicted TMDs. Predictions of TMDs are according to a consensus of TMHMM, Memsat, Phobius and the hydrophobic moment plot method of Eisenberg and coworkers and is calculated by uniprot itself.
-2. The TMDs of each protein are counted. If a protein has more than 1 `TRANSMEM` region, it is not added to the list. The list now contains those protein IDs with only a single `TRANSMEM` region.
-3. The script counts the distance between the `TRANSMEM` region and the C terminus. If the final residue of the `TRANSMEM` annotated region is within 15 residues of the C terminal residue, the ID is added to the list.
-4. Finally the script removes any proteins that contain `NON_TER` annotation. This removes potential signal anchor protein and multipass protein splice isoforms from the list.
-
-This final list, and any intermediate list, can be directly uploaded for batch retrieval from [***uniprot***](http://www.uniprot.org/uploadlists) for more information.
 
 ## System Requirements
 
-This script requires python 2.7 and biopython.
+This script requires python and biopython.
 
 #### Installing Biopython:
 
