@@ -188,7 +188,7 @@ This script requires python and biopython.
  - Open a terminal.
  - If you've not used pip before, run the following commands, entering your password where necessary:
 
- 	`sudo easy_install pip; sudo pip install numpy; sudo pip install Biopython`
+ 	`sudo easy_install pip; pip install numpy; pip install Biopython`
 
 ## Reporting errors
 
